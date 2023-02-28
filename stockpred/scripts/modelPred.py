@@ -174,7 +174,9 @@ def realTimePred(globalPred, globalReal, code, changeModel, longPredInput, chang
                      model, scaler, lookback, lookbackData, epochs, dates, longpredTarget,\
                          longmodel,longscaler,\
                     trainv2,targetv2,realTargetv2,predTargetv2,\
-                                modelv2,scalerv2, lookbackDatav2,lookbackv2, epochsv2, longpredTargetFin ):
+                                modelv2,scalerv2, lookbackDatav2,lookbackv2, epochsv2, longpredTargetFin,\
+                        newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
+                             newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer ):
     
     try:
         dataset, history, historyDate, train, target, realTarget, predTarget,\
@@ -217,7 +219,7 @@ def realTimePred(globalPred, globalReal, code, changeModel, longPredInput, chang
         if changeModel==True:
             
             dead1, dead2, trainv2, targetv2, realTargetv2, predTargetv2,\
-                modelv2, scalerv2, dead4, lookbackv2, lookbackDatav2, epochsv2, dead5 = preloading(dataset,code=code,lookback=4,epochs=3,neurons=4)
+                modelv2, scalerv2, dead4, lookbackv2, lookbackDatav2, epochsv2, dead5 = preloading(dataset,code=code,lookback=newLookback,epochs=newEpoch,neurons=newNeuron, loss = newLoss, optimizer=newOptimizer )
             
             changeModel=False
         
@@ -265,8 +267,7 @@ def realTimePred(globalPred, globalReal, code, changeModel, longPredInput, chang
             elif changelongPredMod == True:
                 longtrainv3,longtargetv3, realTargetdead, longpredTarget,\
                     longmodelv3,longscalerv3,lookbackDatav3, lookbackv3, epochsv3 = \
-                        changeModelFunc(8,conf.optimizer, conf.loss, 3, 4, target, history, scaler, lookbackData)
-                
+                        changeModelFunc(newLongNeuron,newLongOptimizer, newLongLoss, newLongEpoch, newLongLookback, target, history, scaler, lookbackData)
                 mf.longPred(3,longtrainv3,longtargetv3,realTarget,predTarget,\
                             longpredTarget,model,longmodelv3,scaler,longscalerv3,\
                                 lookbackDatav3, epochs=epochsv3, lookback=lookbackv3)
@@ -409,7 +410,8 @@ def realTimePred(globalPred, globalReal, code, changeModel, longPredInput, chang
                     longmodel,longscaler,\
                     trainv2,targetv2,realTargetv2,predTargetv2,\
                                 modelv2,scalerv2, lookbackDatav2,lookbackv2, epochsv2,\
-                                    globalPred, globalReal, longpredTargetFin
+                                    globalPred, globalReal, longpredTargetFin\
+            
     
   
   

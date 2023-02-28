@@ -24,11 +24,11 @@ trainv2,targetv2,realTargetv2,predTargetv2,\
                 lookbackDatav2,lookbackv2, epochsv2 = 0,0,0,0,0,0,0,0,0
 longpredTargetFin=0
 
- 
 
 
 def updates(code, changeModel, longPredInput,\
-                changelongPredMod, cancelModel, cancelLong):
+                changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
+                    newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer):
     
     
     
@@ -44,7 +44,9 @@ def updates(code, changeModel, longPredInput,\
     dashapp.longmodel,dashapp.longscaler,
     dashapp.trainv2,dashapp.targetv2,dashapp.realTargetv2,dashapp.predTargetv2,\
     dashapp.modelv2,dashapp.scalerv2,\
-    dashapp.lookbackDatav2,dashapp.lookbackv2, dashapp.epochsv2, dashapp.longpredTargetFin)
+    dashapp.lookbackDatav2,dashapp.lookbackv2, dashapp.epochsv2, dashapp.longpredTargetFin,\
+        newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
+            newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer)
         
   
     

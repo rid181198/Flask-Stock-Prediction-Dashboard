@@ -7,10 +7,102 @@
 
 
 <body>
-    
+    <div class="col">
+      <div class="col-4">
+        <form method="POST" class="form-register mt-5 ml-2" style="color:black">
+          {{form0.hidden_tag()}}
+
+          {{ form0.code.label() }}
+          {{ form0.code(class = "form-control") }}
+
+          <div class="row justify-content-center mb-2 mt-4 ">
+            <div class="col-4 mr-5">
+              {{ form0.cancelmodel(class='btn btn-outline-dark btn-light') }}
+            </div>
+            <div class="col-4">
+              {{ form0.cancellongmodel(class='btn btn-outline-dark btn-light') }}
+            </div>
+          </div>
+
+          <h5 class="text-black text-center mt-5 mb-4 ">Long prediction</h5>
+
+          {{ form0.numdays.label() }}
+          {{ form0.numdays(class='form-control', placeholder='e.g. 10') }}
+
+          <div class="text-center mt-4">
+            {{ form0.longprediction(class='btn btn-outline-dark btn-light') }}
+          </div>
+
+        </form>
+      </div>
+      <div class="col-4">
+        <form method="POST" class="form-register mt-5 ml-2" style="color:black">
+          {{form1.hidden_tag()}}
+          <h4 class="text-black text-center mb-1">Change the model</h4>
+          <br>
+          {{ form1.newNeuron.label() }}
+          {{ form1.newNeuron(class="form-control", placeholder="e.g. 8")}}
+
+          {{ form1.newEpoch.label() }}
+          {{ form1.newEpoch(class="form-control", placeholder="e.g. 30")}}
+
+          {{ form1.newLookback.label() }}
+          {{ form1.newLookback(class="form-control", placeholder="e.g. 6")}}
+
+          {{ form1.newLoss.label() }}
+          {{ form1.newLoss(class="form-control", placeholder="Select an option")}}
+
+          {{ form1.newOptimizer.label() }}
+          {{ form1.newOptimizer(class="form-control", placeholder="Select an option")}}
+
+          <br>
+
+          <div class="row justify-content-center mb-2">
+            <div class="col-4 mr-5">
+            {{ form1.submitmodel(class='btn btn-md-md btn-outline-dark btn-light') }}
+            </div>
+            <div class="col-4">
+              {{ form1.submitsave(class='btn btn-outline-dark btn-light') }}
+            </div>
+          </div>
+          
+        </form>
+      </div>
+      <div class="col-4">
+        <form method="POST" class="form-register mt-5 ml-2" style="color:black">
+          {{form2.hidden_tag()}}
+          <h4 class="text-black text-center mb-1">Change the long prediction model</h4>
+          <br>
+          {{ form2.newNeuron.label() }}
+          {{ form2.newNeuron(class="form-control", placeholder="e.g. 8")}}
+
+          {{ form2.newEpoch.label() }}
+          {{ form2.newEpoch(class="form-control", placeholder="e.g. 30")}}
+
+          {{ form2.newLookback.label() }}
+          {{ form2.newLookback(class="form-control", placeholder="e.g. 6")}}
+
+          {{ form2.newLoss.label() }}
+          {{ form2.newLoss(class="form-control", placeholder="Select an option")}}
+
+          {{ form2.newOptimizer.label() }}
+          {{ form2.newOptimizer(class="form-control", placeholder="Select an option")}}
+
+          <br>
+
+          <div class="row justify-content-center mb-5">
+            <div class="col-4 mr-5">
+            {{ form2.submitmodel(class='btn btn-outline-dark btn-light') }}
+            </div>
+            <div class="col-4">
+              {{ form2.submitsave(class='btn btn-outline-dark btn-light') }}
+            </div>
+          </div>
+          
+        </form>
+      </div>
+    </div>
     <div id='chart' class='chart'”></div>
-
-
 </body>
    
  <!-- <script type='text/javascript'>

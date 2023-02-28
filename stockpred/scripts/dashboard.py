@@ -28,7 +28,7 @@ longpredTargetFin=0
 
 def updates(code, changeModel, longPredInput,\
                 changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
-                    newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer):
+                    newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays):
     
     
     
@@ -46,7 +46,7 @@ def updates(code, changeModel, longPredInput,\
     dashapp.modelv2,dashapp.scalerv2,\
     dashapp.lookbackDatav2,dashapp.lookbackv2, dashapp.epochsv2, dashapp.longpredTargetFin,\
         newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
-            newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer)
+            newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays)
         
   
     

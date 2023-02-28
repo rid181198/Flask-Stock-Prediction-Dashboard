@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}
+    Home page
+{% endblock %}
+{% block content %}
+    
+<div class="container mt-5 mb-3 mx-10 p-3 border border-dark font-weight-bolder text-center shadow" id="title-home">
+    <h1>This is the Real Time Stock Prediction Dashboard</h1>
+</div>
+<div class="container p-0 mt-2 mb-1 mx-10 border border-dark shadow">
+    <div>
+        <p class="p-5 text-justify">
+            Hello, this is a project I have done to implement Long Short Term Memory 
+            Recurrent Neural Network (LSTM RNN) model on the stock price data of the company.
+            This model is trained on the closing price of the company and future prediction is evaluated through
+            both in-built model and user-friendly model. This project also allows you for the long prediction. 
+            The financial stock data is derived from Yahoo web server. You can directly use our real time stock prediction
+            dashboard or you could register first and login into your profile. The benefit of login into you account is that
+            you can save your predicted data and save the model for future monitor. To start the real time monitor of your prefer company, please click on the below button.
+        </p>
+    </div>
+    
+    <button class="btn-block font-weight-bolder mt-5 btn-light shadow border border-dark " href="{{ url_for('dashboard_page') }}">
+          Get Started!  
+    </button>
+</div>
+
+
+
+
+
+{% endblock %}

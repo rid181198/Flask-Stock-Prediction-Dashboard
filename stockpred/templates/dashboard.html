@@ -7,34 +7,35 @@
 
 
 <body>
-    <div class="col-4 bg-light">
-      <div class="row">
-        <form method="POST" class="form-register mt-5 mx-auto" style="color:black">
+  
+  <div class="col-3">
+      <div class="d-flex justify-content-center">
+        <form method="POST" class="form-register mt-5" style="color:black">
           {{form0.hidden_tag()}}
 
-          {{ form0.code.label() }}
+          {{ form0.code.label(id="form0label") }}
           {{ form0.code(class = "form-control") }}
         </form>
       </div>
-      <div class="row">
-        <form method="POST" class="form-register mt-5 mx-auto" style="color:black">
+      <div class="d-flex justify-content-center">
+        <form method="POST" class="form-register mt-5" style="color:black">
           {{form3.hidden_tag()}}
 
-          <div class="row justify-content-center mb-2 mt-4 ">
-            <div class="col-4 mr-5">
-              {{ form3.cancelmodel(class='btn btn-outline-dark btn-light') }}
-            </div>
-            <div class="col-4">
-              {{ form3.cancellongmodel(class='btn btn-outline-dark btn-light') }}
-            </div>
+          <div class="d-grid text-center">
+              <div>
+                {{ form3.cancelmodel(class='btn btn-outline-dark btn-light', id="form3btn1") }}
+              </div>
+              <div class="mt-2">
+                {{ form3.cancellongmodel(class='btn btn-outline-dark btn-light', id="form3btn2") }}
+              </div>
           </div>
         </form>
       </div>
-      <div class="row">
-        <form method="POST" class="form-register mt-5 mx-auto" style="color:black">
+      <div class="d-flex justify-content-center">
+        <form method="POST" class="form-register mt-5" style="color:black">
           {{form4.hidden_tag()}}
 
-          <h5 class="text-black text-center mt-5 mb-4 ">Long prediction</h5>
+          <h5 class="text-black text-center mt-5 mb-4">Long prediction</h5>
 
           {{ form4.numdays.label() }}
           {{ form4.numdays(class='form-control', placeholder='e.g. 10') }}
@@ -44,10 +45,12 @@
           </div>
         </form>
       </div>
-      <div class="row">
-        <form method="POST" class="form-register mt-5 mx-auto" style="color:black">
+      <div class="d-flex justify-content-center">
+        <form method="POST" class="form-register mt-5" style="color:black">
           {{form1.hidden_tag()}}
-          <h4 class="text-black text-center mb-1">Change the model</h4>
+
+          <h4 class="text-black text-center mt-5 mb-4">Change the model</h4>
+
           <br>
           {{ form1.newNeuron.label() }}
           {{ form1.newNeuron(class="form-control", placeholder="e.g. 8")}}
@@ -66,21 +69,22 @@
 
           <br>
 
-          <div class="row justify-content-center mb-2">
-            <div class="col-4 mr-5">
+          <div class="text-center">
+            <div>
             {{ form1.submitmodel(class='btn btn-md-md btn-outline-dark btn-light') }}
             </div>
-            <div class="col-4">
+            <div class="mt-2">
               {{ form1.submitsave(class='btn btn-outline-dark btn-light') }}
             </div>
           </div>
-          
         </form>
       </div>
-      <div class="row">
-        <form method="POST" class="form-register mt-5 mx-auto" style="color:black">
+      <div class="d-flex justify-content-center">
+        <form method="POST" class="form-register mt-5" style="color:black">
           {{form2.hidden_tag()}}
-          <h4 class="text-black text-center mb-1">Change the long prediction model</h4>
+
+          <h4 class="text-black text-center mt-5 mb-4">Change the long prediction model</h4>
+
           <br>
           {{ form2.newNeuron.label() }}
           {{ form2.newNeuron(class="form-control", placeholder="e.g. 8")}}
@@ -99,21 +103,20 @@
 
           <br>
 
-          <div class="row justify-content-center mb-5">
-            <div class="col-4 mr-5">
-            {{ form2.submitmodel(class='btn btn-outline-dark btn-light') }}
+          <div class="text-center mb-5">
+            <div>
+            {{ form2.submitmodel(class='btn btn-md-md btn-outline-dark btn-light') }}
             </div>
-            <div class="col-4">
+            <div class="mt-2">
               {{ form2.submitsave(class='btn btn-outline-dark btn-light') }}
             </div>
           </div>
-          
         </form>
       </div>
-    </div>
-    <div class="col-8">
-      <div id='chart' class='chart'”></div>
-    </div>
+    </div> 
+  <div class="col-9">
+    <div id='chart' class='chart'”></div>
+  </div>
     
 </body>
    

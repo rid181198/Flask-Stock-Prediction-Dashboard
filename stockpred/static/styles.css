@@ -48,6 +48,10 @@ button{
     margin-left:5%;
 }
 
+#form0label{
+    font-size:1.3rem;
+    margin-left:20%;   
+}
 
 
 @media (max-width: 767.98px) {
@@ -83,5 +87,9 @@ button{
     .footer-p{
         font-size:1.3rem;
     }
+
+
+
+
 }
   

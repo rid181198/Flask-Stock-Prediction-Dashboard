@@ -22,10 +22,12 @@ def login_page():
     return render_template('login.html')
 
 
-code=False
+@app.before_first_request
+def clear_session():
+    session.clear()
+    session['code'] = ''
 @app.route('/dashboard', methods=['GET','POST'])
 def dashboard_page():
- 
     changeModel=False
     changelongPredMod=False
     longPredInput=False

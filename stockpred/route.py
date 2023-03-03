@@ -1,10 +1,11 @@
-from flask import Flask, request, render_template, url_for, flash
+from flask import Flask, request, render_template, url_for, flash, session
 from stockpred import app
 import pandas as pd
 import json
 import stockpred.scripts.dashboard as dash
 import plotly
-from stockpred.forms.dashform import DashFormNewModel, DashFormNewLongModel, generalInputs
+import plotly.express as px
+from stockpred.forms.dashform import DashFormNewModel, DashFormNewLongModel, generalInputs, cancelForm, longpredForm
 from tensorflow.keras.optimizers.legacy import Adam, SGD, RMSprop
 
 @app.route('/')
@@ -20,31 +21,31 @@ def register_page():
 def login_page():
     return render_template('login.html')
 
- 
+
+code=False
 @app.route('/dashboard', methods=['GET','POST'])
 def dashboard_page():
+ 
     changeModel=False
     changelongPredMod=False
     longPredInput=False
     cancelModel=False
-    cancelLong=False
+    cancelLong=False 
     newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
                     newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays = 0,0,0,0,0,0,0,0,0,0,0
 
+    form0 = generalInputs()
     form1 = DashFormNewModel()
     form2 = DashFormNewLongModel()
-    form0 = generalInputs()
-
+    form3=cancelForm()
+    form4 = longpredForm()
     
-        #code=form0.code.data
-
     if form0.validate_on_submit():
-        if form0.cancelmodel.data:
-            print('hello')
-            cancelModel = True
-            #cancelLong=True
-            #longPredInput=True
-            #numDays = form0.numdays.data
+        session['code'] = form0.code.data
+        code=form0.code.data
+    elif 'code' in session:
+        form0.code.data = session['code']
+        code=session['code']
 
     if form1.validate_on_submit():
         if form1.submitmodel.data:
@@ -61,6 +62,10 @@ def dashboard_page():
             if newOptimizer == 'RMSprop':
                 newOptimizer = RMSprop()
 
+    if form4.validate_on_submit():
+        numDays = form4.numdays.data
+        longPredInput = True
+
     if form2.validate_on_submit():
         if form2.submitmodel.data:
             changelongPredMod =True
@@ -76,11 +81,23 @@ def dashboard_page():
             if newLongOptimizer == 'RMSprop':
                 newLongOptimizer = RMSprop()
 
+    if form3.validate_on_submit():
+        if form3.cancelmodel.data:
+            cancelModel = True
+        if form3.cancellongmodel.data:
+            cancelLong=True
 
-    code='AAPL'
-    fig, globalerror, modelerror, newerror = dash.updates(code, changeModel, longPredInput,\
-                changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
-                    newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays)
-    #Create graphJSON
-    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template('dashboard.html', form1=form1, form2=form2, form0=form0, graphJSON=graphJSON)
+
+    if code:
+        fig, globalerror, modelerror, newerror = dash.updates(code, changeModel, longPredInput,\
+                    changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
+                        newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays)
+        #Create graphJSON
+        graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        return render_template('dashboard.html',  form0=form0, form1=form1, form2=form2, form3 = form3, form4 = form4, graphJSON=graphJSON)
+
+    #else:
+    #    fig = px.line(template='plotly_dark')
+    #    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    #    flash(f"Please enter the code", category='danger')
+    return render_template('dashboard.html',  form0=form0, form1=form1, form2=form2, form3 = form3, form4 = form4)

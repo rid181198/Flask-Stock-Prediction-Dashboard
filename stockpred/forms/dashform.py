@@ -6,10 +6,14 @@ from wtforms.validators import Length, DataRequired, NumberRange
 
 class generalInputs(FlaskForm):
     code = StringField(label='Enter the code', validators=[Length(min=1,max=15)])
+    
+class cancelForm(FlaskForm):
     cancelmodel = SubmitField(label='Cancel your model')
-    #cancellongmodel = SubmitField(label='Cancel long prediction')
-    #numdays = IntegerField(label='Enter the days you want to predict', validators=[NumberRange(min=1,max=300)])
-    #longprediction = SubmitField(label='Long prediction')
+    cancellongmodel = SubmitField(label='Cancel long prediction')
+   
+class longpredForm(FlaskForm):
+    numdays = IntegerField(label='Enter the days you want to predict', validators=[NumberRange(min=1,max=300)])
+    longprediction = SubmitField(label='Long prediction')
 
 class DashFormNewModel(FlaskForm):
     newNeuron = IntegerField(label='Neurons', validators=[NumberRange(min=1, max=100)])

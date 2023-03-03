@@ -9,16 +9,38 @@
 <body>
     <div class="col-4 bg-light">
       <div class="row">
-        <form method="POST" class="form-register mt-5 mx-auto" id="form0" style="color:black">
+        <form method="POST" class="form-register mt-5 mx-auto" style="color:black">
           {{form0.hidden_tag()}}
 
           {{ form0.code.label() }}
           {{ form0.code(class = "form-control") }}
+        </form>
+      </div>
+      <div class="row">
+        <form method="POST" class="form-register mt-5 mx-auto" style="color:black">
+          {{form3.hidden_tag()}}
 
           <div class="row justify-content-center mb-2 mt-4 ">
             <div class="col-4 mr-5">
-              {{ form0.cancelmodel(class='btn btn-outline-dark btn-light') }}
+              {{ form3.cancelmodel(class='btn btn-outline-dark btn-light') }}
             </div>
+            <div class="col-4">
+              {{ form3.cancellongmodel(class='btn btn-outline-dark btn-light') }}
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="row">
+        <form method="POST" class="form-register mt-5 mx-auto" style="color:black">
+          {{form4.hidden_tag()}}
+
+          <h5 class="text-black text-center mt-5 mb-4 ">Long prediction</h5>
+
+          {{ form4.numdays.label() }}
+          {{ form4.numdays(class='form-control', placeholder='e.g. 10') }}
+
+          <div class="text-center mt-4">
+            {{ form4.longprediction(class='btn btn-outline-dark btn-light') }}
           </div>
         </form>
       </div>

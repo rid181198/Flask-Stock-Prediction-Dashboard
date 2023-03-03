@@ -188,6 +188,7 @@ def realTimePred(globalPred, globalReal, code, changeModel, longPredInput, chang
     
     
     if cancelModel==True:
+        
         predTargetv2=[]
         trainv2,targetv2,realTargetv2,modelv2,scalerv2,lookbackDatav2,\
         lookbackv2, epochsv2 = 0,0,0,0,0,0,0,0
@@ -217,7 +218,6 @@ def realTimePred(globalPred, globalReal, code, changeModel, longPredInput, chang
            
     
         if changeModel==True:
-            
             dead1, dead2, trainv2, targetv2, realTargetv2, predTargetv2,\
                 modelv2, scalerv2, dead4, lookbackv2, lookbackDatav2, epochsv2, dead5 = preloading(dataset,code=code,lookback=newLookback,epochs=newEpoch,neurons=newNeuron, loss = newLoss, optimizer=newOptimizer )
             

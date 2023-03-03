@@ -19,32 +19,8 @@
             <div class="col-4 mr-5">
               {{ form0.cancelmodel(class='btn btn-outline-dark btn-light') }}
             </div>
-            <div class="col-4">
-              {{ form0.cancellongmodel(class='btn btn-outline-dark btn-light') }}
-            </div>
           </div>
-
-          <h5 class="text-black text-center mt-5 mb-4 ">Long prediction</h5>
-
-          {{ form0.numdays.label() }}
-          {{ form0.numdays(class='form-control', placeholder='e.g. 10') }}
-
-          <div class="text-center mt-4">
-            {{ form0.longprediction(class='btn btn-outline-dark btn-light') }}
-          </div>
-
         </form>
-        <script>
-          var form = document.getElementById('form0');
-          var input = form.elements['code'];
-      
-          input.addEventListener('keyup', function(event) {
-              event.preventDefault();
-              if (event.keyCode === 13) {
-                  form.submit();
-              }
-          });
-        </script>
       </div>
       <div class="row">
         <form method="POST" class="form-register mt-5 mx-auto" style="color:black">

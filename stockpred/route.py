@@ -40,10 +40,11 @@ def dashboard_page():
 
     if form0.validate_on_submit():
         if form0.cancelmodel.data:
+            print('hello')
             cancelModel = True
-            cancelLong=True
-            longPredInput=True
-            numDays = form0.numdays.data
+            #cancelLong=True
+            #longPredInput=True
+            #numDays = form0.numdays.data
 
     if form1.validate_on_submit():
         if form1.submitmodel.data:

@@ -7,123 +7,170 @@
 
 
 <body>
-  
-  <div class="col-3">
-      <div class="d-flex justify-content-center">
-        <form method="POST" class="form-register mt-5" style="color:black">
-          {{form0.hidden_tag()}}
-
-          {{ form0.code.label(id="form0label") }}
-          {{ form0.code(class = "form-control") }}
-        </form>
+<div class="d-flex flex-column">
+  <div class="d-grid">
+    <div class="d-grid my-2">
+      <div class="container mt-2 mb-2 mx-10 p-3 border border-dark font-weight-bolder text-center shadow" id="title-home">
+        <p  class="text-center" style="font-size:1.4rem">Please click on SETTINGS and set the necessary parameters to get the specific Stocks and predictions.</p>
       </div>
-      <div class="d-flex justify-content-center">
-        <form method="POST" class="form-register mt-5" style="color:black">
-          {{form3.hidden_tag()}}
-
-          <div class="d-grid text-center">
-              <div>
-                {{ form3.cancelmodel(class='btn btn-outline-dark btn-light', id="form3btn1") }}
+      <button class="btn btn-light btn-outline-dark shadow" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"><h2>SETTINGS</h2></button>
+    </div>
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+      <div class="offcanvas-header" style="background-color: rgb(219, 217, 217)">
+        <h3 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Settings</h3>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body" style="background-color: rgb(245, 245, 245);">
+        <div class="d-flex flex-column mx-auto">
+          <a href="#" class="text-center" type="button" style="font-size:1.1rem; color:black" data-bs-toggle="modal" data-bs-target="#termsModal">Click here to understand the meta data of Settings</a>
+          <div class="d-flex justify-content-center">
+            <form method="POST" class="form-register mt-5" style="color:black">
+              {{form0.hidden_tag()}}
+    
+              {{ form0.code.label(id="form0label") }}
+              {{ form0.code(class = "form-control", onkeypress="startLoadingField(event)") }}
+            </form>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-center">
+            <form method="POST" class="form-register mt-5" style="color:black">
+              {{form3.hidden_tag()}}
+              <h5 class="text-black text-center mt-5 mb-4">Cancel the models</h5>
+              <div class="d-grid text-center">
+                  <div>
+                    {{ form3.cancelmodel(class='btn btn-outline-dark btn-light', id="form3btn1", onclick="startLoading()") }}
+                  </div>
+                  <div class="mt-2">
+                    {{ form3.cancellongmodel(class='btn btn-outline-dark btn-light', id="form3btn2", onclick="startLoading()") }}
+                  </div>
               </div>
-              <div class="mt-2">
-                {{ form3.cancellongmodel(class='btn btn-outline-dark btn-light', id="form3btn2") }}
+            </form>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-center">
+            <form method="POST" class="form-register mt-5" style="color:black">
+              {{form4.hidden_tag()}}
+    
+              <h5 class="text-black text-center mt-5 mb-4">Long prediction</h5>
+    
+              {{ form4.numdays.label() }}
+              {{ form4.numdays(class='form-control', placeholder='e.g. 10') }}
+    
+              <div class="text-center mt-4">
+                {{ form4.longprediction(class='btn btn-outline-dark btn-light', onclick="startLoading()") }}
               </div>
+            </form>
           </div>
-        </form>
-      </div>
-      <div class="d-flex justify-content-center">
-        <form method="POST" class="form-register mt-5" style="color:black">
-          {{form4.hidden_tag()}}
-
-          <h5 class="text-black text-center mt-5 mb-4">Long prediction</h5>
-
-          {{ form4.numdays.label() }}
-          {{ form4.numdays(class='form-control', placeholder='e.g. 10') }}
-
-          <div class="text-center mt-4">
-            {{ form4.longprediction(class='btn btn-outline-dark btn-light') }}
+          <hr>
+          <div class="d-flex justify-content-center">
+            <form method="POST" class="form-register mt-5" style="color:black">
+              {{form1.hidden_tag()}}
+    
+              <h4 class="text-black text-center mt-5 mb-4">Change the model</h4>
+    
+              <br>
+              {{ form1.newNeuron.label() }}
+              {{ form1.newNeuron(class="form-control", placeholder="e.g. 8")}}
+    
+              {{ form1.newEpoch.label() }}
+              {{ form1.newEpoch(class="form-control", placeholder="e.g. 30")}}
+    
+              {{ form1.newLookback.label() }}
+              {{ form1.newLookback(class="form-control", placeholder="e.g. 6")}}
+    
+              {{ form1.newLoss.label() }}
+              {{ form1.newLoss(class="form-control", placeholder="Select an option")}}
+    
+              {{ form1.newOptimizer.label() }}
+              {{ form1.newOptimizer(class="form-control", placeholder="Select an option")}}
+    
+              <br>
+    
+              <div class="text-center">
+                <div>
+                {{ form1.submitmodel(class='btn btn-md-md btn-outline-dark btn-light', onclick="startLoading()") }}
+                </div>
+                <div class="mt-2">
+                  {{ form1.submitsave(class='btn btn-outline-dark btn-light', onclick="startLoading()") }}
+                </div>
+              </div>
+            </form>
           </div>
-        </form>
-      </div>
-      <div class="d-flex justify-content-center">
-        <form method="POST" class="form-register mt-5" style="color:black">
-          {{form1.hidden_tag()}}
-
-          <h4 class="text-black text-center mt-5 mb-4">Change the model</h4>
-
-          <br>
-          {{ form1.newNeuron.label() }}
-          {{ form1.newNeuron(class="form-control", placeholder="e.g. 8")}}
-
-          {{ form1.newEpoch.label() }}
-          {{ form1.newEpoch(class="form-control", placeholder="e.g. 30")}}
-
-          {{ form1.newLookback.label() }}
-          {{ form1.newLookback(class="form-control", placeholder="e.g. 6")}}
-
-          {{ form1.newLoss.label() }}
-          {{ form1.newLoss(class="form-control", placeholder="Select an option")}}
-
-          {{ form1.newOptimizer.label() }}
-          {{ form1.newOptimizer(class="form-control", placeholder="Select an option")}}
-
-          <br>
-
-          <div class="text-center">
-            <div>
-            {{ form1.submitmodel(class='btn btn-md-md btn-outline-dark btn-light') }}
-            </div>
-            <div class="mt-2">
-              {{ form1.submitsave(class='btn btn-outline-dark btn-light') }}
-            </div>
+          <hr>
+          <div class="d-flex justify-content-center">
+            <form method="POST" class="form-register mt-5" style="color:black">
+              {{form2.hidden_tag()}}
+    
+              <h4 class="text-black text-center mt-5 mb-4">Change the long prediction model</h4>
+    
+              <br>
+              {{ form2.newNeuron.label() }}
+              {{ form2.newNeuron(class="form-control", placeholder="e.g. 8")}}
+    
+              {{ form2.newEpoch.label() }}
+              {{ form2.newEpoch(class="form-control", placeholder="e.g. 30")}}
+    
+              {{ form2.newLookback.label() }}
+              {{ form2.newLookback(class="form-control", placeholder="e.g. 6")}}
+    
+              {{ form2.newLoss.label() }}
+              {{ form2.newLoss(class="form-control", placeholder="Select an option")}}
+    
+              {{ form2.newOptimizer.label() }}
+              {{ form2.newOptimizer(class="form-control", placeholder="Select an option")}}
+    
+              <br>
+    
+              <div class="text-center mb-5">
+                <div>
+                {{ form2.submitmodel(class='btn btn-md-md btn-outline-dark btn-light', onclick="startLoading()") }}
+                </div>
+                <div class="mt-2">
+                  {{ form2.submitsave(class='btn btn-outline-dark btn-light', onclick="startLoading()") }}
+                </div>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
-      <div class="d-flex justify-content-center">
-        <form method="POST" class="form-register mt-5" style="color:black">
-          {{form2.hidden_tag()}}
-
-          <h4 class="text-black text-center mt-5 mb-4">Change the long prediction model</h4>
-
-          <br>
-          {{ form2.newNeuron.label() }}
-          {{ form2.newNeuron(class="form-control", placeholder="e.g. 8")}}
-
-          {{ form2.newEpoch.label() }}
-          {{ form2.newEpoch(class="form-control", placeholder="e.g. 30")}}
-
-          {{ form2.newLookback.label() }}
-          {{ form2.newLookback(class="form-control", placeholder="e.g. 6")}}
-
-          {{ form2.newLoss.label() }}
-          {{ form2.newLoss(class="form-control", placeholder="Select an option")}}
-
-          {{ form2.newOptimizer.label() }}
-          {{ form2.newOptimizer(class="form-control", placeholder="Select an option")}}
-
-          <br>
-
-          <div class="text-center mb-5">
-            <div>
-            {{ form2.submitmodel(class='btn btn-md-md btn-outline-dark btn-light') }}
-            </div>
-            <div class="mt-2">
-              {{ form2.submitsave(class='btn btn-outline-dark btn-light') }}
-            </div>
-          </div>
-        </form>
-      </div>
-    </div> 
-  <div class="col-9">
+    </div>  
+  </div> 
+  <div class="d-grid">
     <div id='chart' class='chart'”></div>
   </div>
-    
+</div> 
 </body>
-   
+ 
+
+
+
+
+
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="termsModalLabel">Meta data of the inputs</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Hello
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 <script type='text/javascript'>
     var graphs = {{graphJSON | safe}};
     Plotly.plot('chart',graphs,{});
 </script>
+
 
 {% endblock %}
     

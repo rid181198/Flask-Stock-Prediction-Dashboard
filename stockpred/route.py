@@ -8,6 +8,7 @@ import plotly.express as px
 from stockpred.forms.dashform import DashFormNewModel, DashFormNewLongModel, generalInputs, cancelForm, longpredForm
 from tensorflow.keras.optimizers.legacy import Adam, SGD, RMSprop
 
+
 @app.route('/')
 @app.route('/home')
 def home_page():

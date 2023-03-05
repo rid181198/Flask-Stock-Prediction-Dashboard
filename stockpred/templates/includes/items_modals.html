@@ -1,0 +1,48 @@
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md">
+      <div class="modal-content" style="font-size:1.4rem">
+        <div class="modal-header">
+            <div class="container mt-1 mb-1 p-1 border border-dark font-weight-bolder text-center shadow">
+                 <h4 class="modal-title" id="termsModalLabel">Meta data of the inputs</h4>
+            </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="font-size:1.2rem">
+            <div class="container mt-1 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+                <h4 class="text-center">Basic inputs</h4>
+            </div>
+            <div class="container mt-1 mb-1 mx-10 p-3 border border-dark font-weight-bolder shadow" style="text-align:justify">
+                <ul>
+                    <li><strong>Code: </strong> Every company has a specific code to obtain the stock data. Please refer this <a href="https://pypi.org/project/yfinance/">link</a> </li>
+                    <li><strong>Cancel models:</strong> This will remove user-given models for both comparison and long term prediction.</li>
+                    <li><strong>Long prediction:</strong> Need to enter the number of days you want to predict (limited to one year). The prediction will be based on the default model.</li>
+                </ul>
+            </div>
+            <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+                <h4 class="text-center">Change the model</h4>
+            </div>
+            <div class="container mt-1 mb-1 mx-10 p-3 border border-dark font-weight-bolder shadow" style="text-align:justify">
+                <ul>
+                    <li><strong>Neurons</strong> More neurons will make model complex and time consuming but the predictions would be accurate. Putting extreme values wouldn't make any difference. Please refer this <a href="https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=4,2&seed=0.54813&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false">link</a></li>
+                    <li><strong>Epochs</strong> Epochs will run the same model for the number you have given. Again extreme values will not affect the results because of saturation</li>
+                    <li><strong>Lookback</strong> This will create a history of stock data. Model learns from this history. For long term prediction, the more the lookback time, the more accurate the results would be. Please refer this <a href="https://towardsdatascience.com/one-step-predictions-with-lstm-forecasting-hotel-revenues-c9ef0d3ef2df">link</a></li>
+                    <li><strong>Loss/Cost function</strong> Model will try to minimize the errors based on this function. You hae choices of MSE (mean squared error), MAE, MAPE, and MSLE. Please refer this <a href="https://towardsdatascience.com/loss-functions-and-their-use-in-neural-networks-a470e703f1e9">link</a></li>
+                    <li><strong>Optimizer</strong> This will optimize the model and make it faster using Adam, SGD (stochastic gradient descent), and RMSprop functions. Please refer this <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers">link</a></li>
+                </ul>
+            </div>
+            <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+                <h4 class="text-center">Change the long prediction model</h4>
+            </div>
+            <div class="container mt-1 mb-1 mx-10 p-3 border border-dark font-weight-bolder shadow" style="text-align:justify">
+                <p class="text-center mt-1 mb-4" style="font-size:1.1rem">Please refer the above description</p>
+                <p style="font-size:1.1rem"> You can even save the models and come in future to see the model perfomance and verification. For that you need to login with your details. Please go to the Login page.</p>
+            </div>
+                
+        </div>
+        <div class="modal-footer w-100" style="display:flex;justify-content: center;align-items: center;">
+          <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

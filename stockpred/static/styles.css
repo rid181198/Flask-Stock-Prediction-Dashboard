@@ -51,7 +51,7 @@ button{
 
 #form0label{
     font-size:1.3rem;
-    margin-left:20%;   
+    margin-left:0%;   
 }
 
 
@@ -116,7 +116,7 @@ button{
     .modal-dialog {
         max-width: 80%;
         position: absolute;
-        left: 60%;
+        left: 50%;
         top: 0%;
         transform: translate(-10%, -10%);
       }

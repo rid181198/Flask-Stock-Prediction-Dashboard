@@ -22,12 +22,16 @@
       </div>
       <div class="offcanvas-body" style="background-color: rgb(245, 245, 245);">
         <div class="d-flex flex-column mx-auto">
-          <a href="#" class="text-center" type="button" style="font-size:1.1rem; color:black" data-bs-toggle="modal" data-bs-target="#termsModal">Click here to understand the meta data of Settings</a>
+          <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+            <a href="#" class="text-center" type="button" style="font-size:1.1rem; color:black" data-bs-toggle="modal" data-bs-target="#termsModal">Click here to understand the meta data of Settings</a>
+          </div>
           <div class="d-flex justify-content-center">
             <form method="POST" class="form-register mt-5" style="color:black">
               {{form0.hidden_tag()}}
     
-              {{ form0.code.label(id="form0label") }}
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+               {{ form0.code.label(id="form0label") }}
+              </div>
               {{ form0.code(class = "form-control", onkeypress="startLoadingField(event)") }}
             </form>
           </div>
@@ -35,7 +39,8 @@
           <div class="d-flex justify-content-center">
             <form method="POST" class="form-register mt-5" style="color:black">
               {{form3.hidden_tag()}}
-              <h5 class="text-black text-center mt-5 mb-4">Cancel the models</h5>
+                <h5 class="text-black text-center my-2">Cancel the models</h5>
+        
               <div class="d-grid text-center">
                   <div>
                     {{ form3.cancelmodel(class='btn btn-outline-dark btn-light', id="form3btn1", onclick="startLoading()") }}
@@ -52,8 +57,10 @@
               {{form4.hidden_tag()}}
     
               <h5 class="text-black text-center mt-5 mb-4">Long prediction</h5>
-    
-              {{ form4.numdays.label() }}
+              
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+                {{ form4.numdays.label() }}
+              </div>
               {{ form4.numdays(class='form-control', placeholder='e.g. 10') }}
     
               <div class="text-center mt-4">
@@ -69,19 +76,29 @@
               <h4 class="text-black text-center mt-5 mb-4">Change the model</h4>
     
               <br>
-              {{ form1.newNeuron.label() }}
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+                {{ form1.newNeuron.label() }}
+              </div>
               {{ form1.newNeuron(class="form-control", placeholder="e.g. 8")}}
-    
-              {{ form1.newEpoch.label() }}
+              
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+                {{ form1.newEpoch.label() }}
+              </div>
               {{ form1.newEpoch(class="form-control", placeholder="e.g. 30")}}
-    
-              {{ form1.newLookback.label() }}
+              
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+                {{ form1.newLookback.label() }}
+              </div>
               {{ form1.newLookback(class="form-control", placeholder="e.g. 6")}}
-    
-              {{ form1.newLoss.label() }}
+              
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+                {{ form1.newLoss.label() }}
+              </div>
               {{ form1.newLoss(class="form-control", placeholder="Select an option")}}
     
-              {{ form1.newOptimizer.label() }}
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+                {{ form1.newOptimizer.label() }}
+              </div>
               {{ form1.newOptimizer(class="form-control", placeholder="Select an option")}}
     
               <br>
@@ -104,19 +121,29 @@
               <h4 class="text-black text-center mt-5 mb-4">Change the long prediction model</h4>
     
               <br>
-              {{ form2.newNeuron.label() }}
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+                {{ form2.newNeuron.label() }}
+              </div>
               {{ form2.newNeuron(class="form-control", placeholder="e.g. 8")}}
     
-              {{ form2.newEpoch.label() }}
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+                {{ form2.newEpoch.label() }}
+              </div>
               {{ form2.newEpoch(class="form-control", placeholder="e.g. 30")}}
     
-              {{ form2.newLookback.label() }}
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+                {{ form2.newLookback.label() }}
+              </div>
               {{ form2.newLookback(class="form-control", placeholder="e.g. 6")}}
     
-              {{ form2.newLoss.label() }}
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+                {{ form2.newLoss.label() }}
+              </div>
               {{ form2.newLoss(class="form-control", placeholder="Select an option")}}
     
-              {{ form2.newOptimizer.label() }}
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+                {{ form2.newOptimizer.label() }}
+              </div>
               {{ form2.newOptimizer(class="form-control", placeholder="Select an option")}}
     
               <br>
@@ -141,30 +168,7 @@
 </div> 
 </body>
  
-
-
-
-
-
-<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="termsModalLabel">Meta data of the inputs</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Hello
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
+{% include 'includes/items_modals.html' %}
 
 <script type='text/javascript'>
     var graphs = {{graphJSON | safe}};

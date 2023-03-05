@@ -22,14 +22,14 @@
       </div>
       <div class="offcanvas-body" style="background-color: rgb(245, 245, 245);">
         <div class="d-flex flex-column mx-auto">
-          <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+          <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.3rem">
             <a href="#" class="text-center" type="button" style="font-size:1.1rem; color:black" data-bs-toggle="modal" data-bs-target="#termsModal">Click here to understand the meta data of Settings</a>
           </div>
           <div class="d-flex justify-content-center">
             <form method="POST" class="form-register mt-5" style="color:black">
               {{form0.hidden_tag()}}
     
-              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.2rem">
                {{ form0.code.label(id="form0label") }}
               </div>
               {{ form0.code(class = "form-control", onkeypress="startLoadingField(event)") }}
@@ -58,7 +58,7 @@
     
               <h5 class="text-black text-center mt-5 mb-4">Long prediction</h5>
               
-              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.2rem">
                 {{ form4.numdays.label() }}
               </div>
               {{ form4.numdays(class='form-control', placeholder='e.g. 10') }}
@@ -76,27 +76,27 @@
               <h4 class="text-black text-center mt-5 mb-4">Change the model</h4>
     
               <br>
-              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.2rem">
                 {{ form1.newNeuron.label() }}
               </div>
               {{ form1.newNeuron(class="form-control", placeholder="e.g. 8")}}
               
-              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.2rem">
                 {{ form1.newEpoch.label() }}
               </div>
               {{ form1.newEpoch(class="form-control", placeholder="e.g. 30")}}
               
-              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.2rem">
                 {{ form1.newLookback.label() }}
               </div>
               {{ form1.newLookback(class="form-control", placeholder="e.g. 6")}}
               
-              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.2rem">
                 {{ form1.newLoss.label() }}
               </div>
               {{ form1.newLoss(class="form-control", placeholder="Select an option")}}
     
-              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.2rem">
                 {{ form1.newOptimizer.label() }}
               </div>
               {{ form1.newOptimizer(class="form-control", placeholder="Select an option")}}
@@ -121,27 +121,27 @@
               <h4 class="text-black text-center mt-5 mb-4">Change the long prediction model</h4>
     
               <br>
-              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.2rem">
                 {{ form2.newNeuron.label() }}
               </div>
               {{ form2.newNeuron(class="form-control", placeholder="e.g. 8")}}
     
-              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.2rem">
                 {{ form2.newEpoch.label() }}
               </div>
               {{ form2.newEpoch(class="form-control", placeholder="e.g. 30")}}
     
-              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.2rem">
                 {{ form2.newLookback.label() }}
               </div>
               {{ form2.newLookback(class="form-control", placeholder="e.g. 6")}}
     
-              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.2rem">
                 {{ form2.newLoss.label() }}
               </div>
               {{ form2.newLoss(class="form-control", placeholder="Select an option")}}
     
-              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow">
+              <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.2rem">
                 {{ form2.newOptimizer.label() }}
               </div>
               {{ form2.newOptimizer(class="form-control", placeholder="Select an option")}}
@@ -172,7 +172,16 @@
 
 <script type='text/javascript'>
     var graphs = {{graphJSON | safe}};
-    Plotly.plot('chart',graphs,{});
+    var container = document.getElementById('chart');
+    Plotly.plot('chart',graphs,{responsive: true});
+    window.addEventListener('resize', function() {
+            var newScreenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            var newWidth = newScreenWidth.toString() + 'px';
+            var newHeight = (window.innerHeight * 0.8).toString() + 'px';
+            container.style.width = newWidth;
+            container.style.height = newHeight;
+            Plotly.update('chart', {}, {width: newWidth, height: newHeight});
+        });
 </script>
 
 

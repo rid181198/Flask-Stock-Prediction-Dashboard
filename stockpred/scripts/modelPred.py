@@ -352,8 +352,7 @@ def realTimePred(globalPred, globalReal, code, changeModel, longPredInput, chang
     
     final =  pd.concat([originalf1, originalf2, preddf1, preddf2, longpreddf])
     fig = px.line(final, x = 'Date', y = 'Stock price', color = 'Class',\
-                  markers = True, \
-                      title="Real time stock prediction of " + str(code),\
+                  markers = True,\
                           template='plotly_dark')
     
     
@@ -372,9 +371,10 @@ def realTimePred(globalPred, globalReal, code, changeModel, longPredInput, chang
 
     
     
-    fig.update_layout(font_color='white',\
+    fig.update_layout(height=700,font_color='white',\
                           title_font_color='white',\
-                    font=dict(family='Franklin Gothic', size=22))
+                          title={'text': "Real time stock prediction of " + str(code),'x': 0.5,'y': 0.9,'xanchor': 'center','yanchor': 'middle'},\
+    font=dict(family="Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'", size=22))
     
      
         

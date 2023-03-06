@@ -410,7 +410,7 @@ def realTimePred(globalPred, globalReal, code, changeModel, longPredInput, chang
                     longmodel,longscaler,\
                     trainv2,targetv2,realTargetv2,predTargetv2,\
                                 modelv2,scalerv2, lookbackDatav2,lookbackv2, epochsv2,\
-                                    globalPred, globalReal, longpredTargetFin\
+                                    globalPred, globalReal, longpredTargetFin, final\
             
     
   

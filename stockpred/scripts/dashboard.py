@@ -36,7 +36,7 @@ def updates(code, changeModel, longPredInput,\
     dataset, history, historyDate, train, target, realTarget, predTarget,\
     model, scaler, lookback, lookbackData, epochs, dates, longpredTarget,\
     longmodel,longscaler,trainv2,targetv2,realTargetv2,predTargetv2,\
-    modelv2,scalerv2,lookbackDatav2,lookbackv2, epochsv2,globalPred, globalReal, longpredTargetFin=\
+    modelv2,scalerv2,lookbackDatav2,lookbackv2, epochsv2,globalPred, globalReal, longpredTargetFin, final=\
     mp.realTimePred(dashapp.globalPred, dashapp.globalReal, code, changeModel, longPredInput,\
     changelongPredMod, cancelModel, cancelLong, dashapp.prevCode, \
     dashapp.dataset, dashapp.history, dashapp.historyDate, dashapp.train, dashapp.target, dashapp.realTarget, dashapp.predTarget,\
@@ -65,7 +65,7 @@ def updates(code, changeModel, longPredInput,\
   
     return fig, 'Global RMSE: {}'.format(rmseGlobal),\
         'Inbuilt model RMSE: {}'.format(rmseModel),\
-            'New model RMSE: {}'.format(rmseNew)
+            'New model RMSE: {}'.format(rmseNew), final
 
 
 

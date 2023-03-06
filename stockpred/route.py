@@ -6,21 +6,16 @@ import stockpred.scripts.dashboard as dash
 import plotly
 import plotly.express as px
 from stockpred.forms.dashform import DashFormNewModel, DashFormNewLongModel, generalInputs, cancelForm, longpredForm
+from stockpred.forms.user import RegisterForm, LoginForm
 from tensorflow.keras.optimizers.legacy import Adam, SGD, RMSprop
-
+from flask_login import login_user, logout_user, login_required, current_user
+from stockpred import db
 
 @app.route('/')
 @app.route('/home')
 def home_page():
     return render_template('home.html')
 
-@app.route('/register')
-def register_page():
-    return render_template('register.html')
-
-@app.route('/login')
-def login_page():
-    return render_template('login.html')
 
 
 @app.before_first_request
@@ -92,7 +87,7 @@ def dashboard_page():
 
 
     if code:
-        fig, globalerror, modelerror, newerror = dash.updates(code, changeModel, longPredInput,\
+        fig, globalerror, modelerror, newerror, final = dash.updates(code, changeModel, longPredInput,\
                     changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
                         newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays)
         #Create graphJSON
@@ -104,3 +99,25 @@ def dashboard_page():
     #    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     #    flash(f"Please enter the code", category='danger')
     return render_template('dashboard.html',  form0=form0, form1=form1, form2=form2, form3 = form3, form4 = form4)
+
+
+
+
+@app.route('/register', methods=['GET','POST'])
+def register_page():
+    form0 = RegisterForm()
+    if form0.validate_on_submit():
+        user_to_create = User(username = form0.username.data,
+                              email_address = form0.email_address.data,
+                              password = form0.password1.data)
+        
+        db.session.add(user_to_create)
+        db.session.commit()
+        login_user(user_to_create)
+        flash(f"Account created successfully! You are now logged in as {user_to_create.username}", category='success')
+    return render_template('register.html', form0 = form0)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login_page():
+    form = LoginForm()
+    return render_template('login.html', form=form)

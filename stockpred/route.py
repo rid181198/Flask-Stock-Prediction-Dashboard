@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, url_for, flash, session
+from flask import Flask, request, render_template, url_for, flash, session, redirect
 from stockpred import app
 import pandas as pd
 import json
@@ -99,7 +99,7 @@ def dashboard_page():
     #    fig = px.line(template='plotly_dark')
     #    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     #    flash(f"Please enter the code", category='danger')
-    return render_template('dashboard.html',  form0=form0, form1=form1, form2=form2, form3 = form3, form4 = form4)
+    return render_template('dashboard.html',  form0=form0, form1=form1, form2=form2, form3 = form3, form4 = form4, code=code)
 
 
 
@@ -114,11 +114,17 @@ def register_page():
         
         db.session.add(user_to_create)
         db.session.commit()
-        login_user(user_to_create)
         flash(f"Account created successfully! You are now logged in as {user_to_create.username}", category='success')
     return render_template('register.html', form0 = form0)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
     form = LoginForm()
+    if form.validate_on_submit():
+        attempted_user = User.query.filter_by(email_address = form.email_address.data).first()
+        if attempted_user and attempted_user.check_password(attempted_password = form.password.data):
+            flash(f'Success! You are logged in as: {attempted_user.email_address}', category='success')
+            return redirect(url_for('dashboard_page'))
+        else:
+            flash('Username and password are not match! Please try again', category='danger')
     return render_template('login.html', form=form)

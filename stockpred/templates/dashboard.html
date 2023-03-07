@@ -32,7 +32,7 @@
               <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.2rem">
                {{ form0.code.label(id="form0label") }}
               </div>
-              {{ form0.code(class = "form-control", onkeypress="startLoadingField(event)") }}
+              {{ form0.code(class = "form-control", id='code', onkeypress="startLoadingField(event)") }}
             </form>
           </div>
           <hr>
@@ -163,25 +163,50 @@
     </div>  
   </div> 
   <div class="d-grid">
-    <div id='chart' class='chart'”></div>
+    <div id="chart" class="chart"></div>
   </div>
 </div> 
 </body>
  
 {% include 'includes/items_modals.html' %}
 
-<script type='text/javascript'>
-    var graphs = {{graphJSON | safe}};
-    var container = document.getElementById('chart');
-    Plotly.plot('chart',graphs,{responsive: true});
-    window.addEventListener('resize', function() {
-            var newScreenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-            var newWidth = newScreenWidth.toString() + 'px';
-            var newHeight = (window.innerHeight * 0.8).toString() + 'px';
-            container.style.width = newWidth;
-            container.style.height = newHeight;
-            Plotly.update('chart', {}, {width: newWidth, height: newHeight});
-        });
+<script type="text/javascript">
+  var graphs = {{graphJSON | safe}};
+  var container = document.getElementById('chart');
+  Plotly.plot('chart', graphs, {});
+
+  function resizePlot() {
+    var layout = {
+      width: window.innerWidth * 0.999, // Adjust the scaling factor as needed
+      height: window.innerHeight * 0.8, // Adjust the scaling factor as needed
+      legend: { font: { size: window.innerWidth * 0.02 } },
+    yaxis: {
+      title: 'Stock price',
+      tickfont: {
+      size: window.innerWidth * 0.02 // Change the font size as needed
+      },
+      titlefont: { size: window.innerWidth * 0.02 }
+    },
+    xaxis: {
+      title: 'Date',
+      tickfont: {
+      size: window.innerWidth * 0.02 // Change the font size as needed
+      },
+      titlefont: { size: window.innerWidth * 0.02 }
+    },
+    title: {
+      text: 'Real time stock prediction of',
+      font: { size: window.innerWidth * 0.03 }
+    }
+    };
+    Plotly.relayout(container, layout);
+  }
+
+  // Call resizePlot() on load and add a listener for the 'resize' event
+  resizePlot();
+  window.addEventListener('resize', function() {
+    window.requestAnimationFrame(resizePlot);
+  });
 </script>
 
 

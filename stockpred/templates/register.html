@@ -9,28 +9,43 @@
     <div class="container">
         <form method="POST" class="form-register" style="color:black">
             {{ form0.hidden_tag() }}
-            <h1 class="h3 mb-3 font-weight-normal"> Please Create Your Account</h1>
+
+            <div class="container mt-5 mb-4 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.6rem; background-color: rgb(219, 217, 217);">
+            <h1 class="h1 font-weight-normal"> Please Create Your Account</h1>
+            </div>
+
             <br>
+
+            <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.6rem">
             {{ form0.username.label() }}
-            {{ form0.username(class="form-control", placeholder="User Name") }}
+            </div>
+            {{ form0.username(class="form-control", placeholder="User Name", style='font-size:1.4rem') }}
 
+            <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.6rem">
             {{ form0.email_address.label() }}
-            {{ form0.email_address(class="form-control", placeholder="Email Address") }}
+            </div>
+            {{ form0.email_address(class="form-control", placeholder="Email Address", style='font-size:1.4rem') }}
 
+            <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.6rem">
             {{ form0.password1.label() }}
-            {{ form0.password1(class="form-control", placeholder="Password") }}
+            </div>
+            {{ form0.password1(class="form-control", placeholder="Password", style='font-size:1.4rem') }}
 
+            <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.6rem">
             {{ form0.password2.label() }}
-            {{ form0.password2(class="form-control", placeholder="Confirm Password") }}
+            </div>
+            {{ form0.password2(class="form-control", placeholder="Confirm Password", style='font-size:1.4rem') }}
 
             <br>
+
+            {{ form0.submit(class="btn btn-lg btn-light btn-outline-dark mb-5", style='font-size:1.4rem') }}
 
             <div class="checkbox mb-3">
                 <h6>Already have an account?</h6>
                 <a class="btn btn-sm btn-light btn-outline-dark" href="{{ url_for('login_page') }}">Login</a>
             </div>
 
-            {{ form0.submit(class="btn btn-sm btn-light btn-outline-dark") }}
+            
         </form>
     </div>
 

@@ -9,24 +9,32 @@
     <div class="container">
         <form method="POST" class="form-signin" style="color:black">
             {{ form.hidden_tag() }}
-            <h1 class="h3 mb-3 font-weight-normal">Please Login</h1>
 
+            <div class="container mt-5 mb-4 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.6rem; background-color: rgb(219, 217, 217);">
+            <h1 class="h1 font-weight-normal">Please Login</h1>
+            </div>
             <br>
 
-            {{ form.username.label() }}
-            {{ form.username(class="form-control", placeholder="User Name") }}
+            <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.6rem">
+            {{ form.email_address.label() }}
+            </div>
+            {{ form.email_address(class="form-control", placeholder="Email Address", style='font-size:1.4rem') }}
 
+            <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.6rem">
             {{ form.password.label() }}
-            {{ form.password(class="form-control", placeholder="Password") }}
+            </div>
+            {{ form.password(class="form-control", placeholder="Password", style='font-size:1.4rem') }}
 
             <br>
+            
+            {{ form.submit(class="btn btn-lg btn-light btn-outline-dark mb-5", style='font-size:1.5rem' ) }}
 
             <div class="checkbox mb-3">
                 <h6>Do not have an account?</h6>
                 <a class="btn btn-sm btn-light btn-outline-dark" href="{{ url_for('register_page') }}">Register</a>
             </div>
 
-            {{ form.submit(class="btn btn-sm btn-light btn-outline-dark" ) }}
+            
         </form>
     </div>
 

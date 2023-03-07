@@ -7,6 +7,7 @@ import plotly
 import plotly.express as px
 from stockpred.forms.dashform import DashFormNewModel, DashFormNewLongModel, generalInputs, cancelForm, longpredForm
 from stockpred.forms.user import RegisterForm, LoginForm
+from stockpred.models.register import User, Userdata
 from tensorflow.keras.optimizers.legacy import Adam, SGD, RMSprop
 from flask_login import login_user, logout_user, login_required, current_user
 from stockpred import db

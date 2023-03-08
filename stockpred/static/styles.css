@@ -72,6 +72,9 @@ button{
     height:6rem;
 }
 
+#errors{
+    width:30%;
+}
 
   
 @media (max-width: 767.98px) {

@@ -93,13 +93,16 @@ def dashboard_page():
                         newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays)
         #Create graphJSON
         graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-        return render_template('dashboard.html',  form0=form0, form1=form1, form2=form2, form3 = form3, form4 = form4, graphJSON=graphJSON)
+        errorsDict = {'globalerror': globalerror, 'modelerror': modelerror, 'newerror': newerror, 'final': final}
+        return render_template('dashboard.html',  form0=form0, form1=form1, form2=form2, form3 = form3, form4 = form4, graphJSON=graphJSON, errorsDict = errorsDict)
 
+    else:
+        errorsDict = {'globalerror': 0, 'modelerror': 0, 'newerror': 0, 'final': 0}
     #else:
     #    fig = px.line(template='plotly_dark')
     #    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     #    flash(f"Please enter the code", category='danger')
-    return render_template('dashboard.html',  form0=form0, form1=form1, form2=form2, form3 = form3, form4 = form4, code=code)
+    return render_template('dashboard.html',  form0=form0, form1=form1, form2=form2, form3 = form3, form4 = form4, errorsDict = errorsDict)
 
 
 

@@ -63,9 +63,9 @@ def updates(code, changeModel, longPredInput,\
     
     dashapp.globalPred, dashapp.globalReal, dashapp.longpredTargetFin= globalPred, globalReal, longpredTargetFin
   
-    return fig, 'Global RMSE: {}'.format(rmseGlobal),\
-        'Inbuilt model RMSE: {}'.format(rmseModel),\
-            'New model RMSE: {}'.format(rmseNew), final
+    return fig, rmseGlobal,\
+        rmseModel,\
+           rmseNew, final
 
 
 

@@ -11,6 +11,7 @@ from stockpred.models.register import User, Userdata
 from tensorflow.keras.optimizers.legacy import Adam, SGD, RMSprop
 from flask_login import login_user, logout_user, login_required, current_user
 from stockpred import db
+import time
 
 @app.route('/')
 @app.route('/home')
@@ -94,7 +95,7 @@ def dashboard_page():
         #Create graphJSON
         graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
         errorsDict = {'globalerror': globalerror, 'modelerror': modelerror, 'newerror': newerror, 'final': final}
-        return render_template('dashboard.html',  form0=form0, form1=form1, form2=form2, form3 = form3, form4 = form4, graphJSON=graphJSON, errorsDict = errorsDict)
+        return render_template('dashboard.html',  form0=form0, form1=form1, form2=form2, form3 = form3, form4 = form4, graphJSON=graphJSON, errorsDict = errorsDict, code=code)
 
     else:
         errorsDict = {'globalerror': 0, 'modelerror': 0, 'newerror': 0, 'final': 0}
@@ -131,3 +132,5 @@ def login_page():
         else:
             flash('Username and password are not match! Please try again', category='danger')
     return render_template('login.html', form=form)
+
+

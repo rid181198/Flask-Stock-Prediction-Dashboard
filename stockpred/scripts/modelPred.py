@@ -370,7 +370,8 @@ def realTimePred(globalPred, globalReal, code, changeModel, longPredInput, chang
     
 
     
-    
+    fig.update_xaxes(type="date",range=[list(historyDate)[-25], list(historyDate)[-1]])
+    fig.update_yaxes(range=[history[-25], history[-1]])
     fig.update_layout(height=700,font_color='white',\
                           title_font_color='white',\
                           title={'text': "Real time stock prediction of " + str(code),'x': 0.5,'y': 0.9,'xanchor': 'center','yanchor': 'middle'},\

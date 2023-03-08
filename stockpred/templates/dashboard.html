@@ -178,7 +178,7 @@
   
     </div>
 
-    <div class="d-flex d-inline justify-content-center">
+    <div class="d-flex d-inline justify-content-center mt-3">
       <div class="container mb-2 p-2 border border-dark font-weight-bolder text-center shadow" id="errors" style="font-size:1.5rem">
         Your model's current RMSE : <strong>{{ errorsDict['newerror'] }}</strong>
       </div>
@@ -204,22 +204,42 @@
     yaxis: {
       title: 'Stock price',
       tickfont: {
-      size: window.innerWidth * 0.02 // Change the font size as needed
+      size: window.innerWidth * 0.018 // Change the font size as needed
       },
-      titlefont: { size: window.innerWidth * 0.02 }
+      titlefont: { size: window.innerWidth * 0.018 }
     },
     xaxis: {
       title: 'Date',
       tickfont: {
-      size: window.innerWidth * 0.02 // Change the font size as needed
+      size: window.innerWidth * 0.018 // Change the font size as needed
       },
-      titlefont: { size: window.innerWidth * 0.02 }
+      titlefont: { size: window.innerWidth * 0.018 }
     },
     title: {
-      text: 'Real time stock prediction of',
-      font: { size: window.innerWidth * 0.03 }
+      text: 'Real time stock prediction of {{ code }}',
+      font: { size: window.innerWidth * 0.028 },
+      xref: 'paper',
+      x: 0.5,
+      yref:'paper',
+      y:0.985,
     }
     };
+
+    if (window.innerWidth <= 800) {
+    layout.legend = {
+      font: { size: window.innerWidth * 0.018 },
+      orientation: 'h',
+      yanchor: 'top',
+      xanchor: 'center',
+      x: 0.5,
+      y: 1.28
+    };
+    } else {
+      layout.legend = {
+        font: { size: window.innerWidth * 0.018 },
+      };
+    }
+
     Plotly.relayout(container, layout);
   }
 

@@ -351,9 +351,11 @@ def realTimePred(globalPred, globalReal, code, changeModel, longPredInput, chang
         
     
     final =  pd.concat([originalf1, originalf2, preddf1, preddf2, longpreddf])
+    color_map = {'Previous (Before deployment)': 'blue', 'Current (After deployment)' : 'red', 'Prediction (Deployed model)':'green',\
+                 'Prediction (Your model)': 'purple','Long prediction':'orange'}
     fig = px.line(final, x = 'Date', y = 'Stock price', color = 'Class',\
                   markers = True,\
-                          template='plotly_dark')
+                          template='plotly_dark', color_discrete_map = color_map)
     
     
     posdiffBars = final[final['difference']>=0]
@@ -361,8 +363,8 @@ def realTimePred(globalPred, globalReal, code, changeModel, longPredInput, chang
     #fig2 = px.bar(final[final['difference']>=0], x="Date", y="difference" ,color_discrete_sequence =['green']*len(final[final['difference']>=0]),opacity=0.9,barmode='overlay',base='Stock price',width=[15]*len(final[final['difference']>=0]))
     #fig3 = px.bar(final[final['difference']<0], x="Date", y="difference",color_discrete_sequence =['red']*len(final[final['difference']<0]),opacity=0.9,barmode='overlay',base='Stock price',width=[15]*len(final[final['difference']<0]))
     
-    fig2 = go.Bar( x=posdiffBars['Date'], y=posdiffBars["difference"] ,marker =dict(color='green'),opacity=0.25,base=posdiffBars['Stock price'])
-    fig3 = go.Bar( x=negdiffBars['Date'], y=negdiffBars["difference"] ,marker =dict(color='red'),opacity=0.25,base=negdiffBars['Stock price'])
+    fig2 = go.Bar( x=posdiffBars['Date'], y=posdiffBars["difference"] ,marker =dict(color='green'),opacity=0.25,base=posdiffBars['Stock price'], name = "Positive changes")
+    fig3 = go.Bar( x=negdiffBars['Date'], y=negdiffBars["difference"] ,marker =dict(color='red'),opacity=0.25,base=negdiffBars['Stock price'], name="Negative changes")
     
     fig.add_trace(fig2)
     fig.add_trace(fig3)    
@@ -372,8 +374,10 @@ def realTimePred(globalPred, globalReal, code, changeModel, longPredInput, chang
     
     fig.update_xaxes(type="date",range=[list(historyDate)[-25], list(historyDate)[-1]])
     fig.update_yaxes(range=[history[-25], history[-1]])
-    fig.update_layout(height=700,font_color='white',\
-                          title_font_color='white',\
+    fig.update_layout(height=700,font_color='black',\
+                          title_font_color='black',\
+                          xaxis_showgrid=False,\
+                          yaxis_showgrid=False,\
                           title={'text': "Real time stock prediction of " + str(code),'x': 0.5,'y': 0.9,'xanchor': 'center','yanchor': 'middle'},\
     font=dict(family="Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'", size=22))
     
@@ -391,14 +395,14 @@ def realTimePred(globalPred, globalReal, code, changeModel, longPredInput, chang
     #print("Inbuilt model's RMSE: ", mf.evaluationScore(np.array(realTarget), np.array(predTarget[:-1])))
     #print("Your model's RMSE: ", mf.evaluationScore(np.array(realTarget), np.array(predTargetv2[:-1])))
     
-    rmseGlobal = mf.evaluationScore(globalReal, globalPred)
-    rmseModel = mf.evaluationScore(np.array(realTarget), np.array(predTarget[:-1]))
+    maeGlobal, rmseGlobal = mf.evaluationScore(globalReal, globalPred)
+    maeModel, rmseModel = mf.evaluationScore(np.array(realTarget), np.array(predTarget[:-1]))
  
     
     if predTargetv2[:-1]:
-        rmseNew = mf.evaluationScore(np.array(realTarget), np.array(predTargetv2[:-1]))
+        maeNew, rmseNew = mf.evaluationScore(np.array(realTarget), np.array(predTargetv2[:-1]))
     else:
-        rmseNew=0
+        maeNew, rmseNew=0,0
     
     prevCode=code
     

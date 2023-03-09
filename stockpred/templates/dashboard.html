@@ -13,7 +13,7 @@
       <div class="container mt-2 mb-2 mx-10 p-3 border border-dark font-weight-bolder text-center shadow" id="title-home">
         <p  class="text-center" style="font-size:1.4rem">Please click on SETTINGS and set the necessary parameters to get the specific Stocks and predictions.</p>
       </div>
-      <button class="btn btn-light btn-outline-dark shadow" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"><h2>SETTINGS</h2></button>
+      <button class="btn btn-light btn-outline-dark shadow mb-4" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"><h2>SETTINGS</h2></button>
     </div>
     <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
       <div class="offcanvas-header" style="background-color: rgb(219, 217, 217)">
@@ -206,14 +206,23 @@
       tickfont: {
       size: window.innerWidth * 0.018 // Change the font size as needed
       },
-      titlefont: { size: window.innerWidth * 0.018 }
+      titlefont: { size: window.innerWidth * 0.018 },
+      showgrid: false,
+      showticklabels: true,
+      showline: true,
+      showtickmode: "linear"
+      
     },
     xaxis: {
       title: 'Date',
       tickfont: {
       size: window.innerWidth * 0.018 // Change the font size as needed
       },
-      titlefont: { size: window.innerWidth * 0.018 }
+      titlefont: { size: window.innerWidth * 0.018 },
+      showgrid: false,
+      showticklabels: true,
+      showline: true,
+      showtickmode: "linear"
     },
     title: {
       text: 'Real time stock prediction of {{ code }}',
@@ -221,8 +230,10 @@
       xref: 'paper',
       x: 0.5,
       yref:'paper',
-      y:0.985,
-    }
+      y:0.995,
+    },
+    plot_bgcolor: 'rgb(245, 245, 245)', 
+    paper_bgcolor: 'rgb(245, 245, 245)'
     };
 
     if (window.innerWidth <= 800) {

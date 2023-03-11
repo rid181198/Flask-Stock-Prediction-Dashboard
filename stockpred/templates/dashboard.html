@@ -65,6 +65,7 @@
     
               <div class="text-center mt-4">
                 {{ form4.longprediction(class='btn btn-outline-dark btn-light', onclick="startLoading()") }}
+                <input type="hidden" name="form4button1" id="form4button1" value="True">
               </div>
             </form>
           </div>
@@ -106,10 +107,8 @@
               <div class="text-center">
                 <div>
                 {{ form1.submitmodel(class='btn btn-md-md btn-outline-dark btn-light', onclick="startLoading()") }}
-                </div>
-                <div class="mt-2">
-                  {{ form1.submitsave(class='btn btn-outline-dark btn-light', onclick="startLoading()") }}
-                </div>
+                <input type="hidden" name="form1button1" id="form1button1" value="True">
+               </div>
               </div>
             </form>
           </div>
@@ -122,38 +121,36 @@
     
               <br>
               <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.2rem">
-                {{ form2.newNeuron.label() }}
+                {{ form2.newNeuron2.label() }}
               </div>
-              {{ form2.newNeuron(class="form-control", placeholder="e.g. 8")}}
+              {{ form2.newNeuron2(class="form-control", placeholder="e.g. 8")}}
     
               <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.2rem">
-                {{ form2.newEpoch.label() }}
+                {{ form2.newEpoch2.label() }}
               </div>
-              {{ form2.newEpoch(class="form-control", placeholder="e.g. 30")}}
+              {{ form2.newEpoch2(class="form-control", placeholder="e.g. 30")}}
     
               <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.2rem">
-                {{ form2.newLookback.label() }}
+                {{ form2.newLookback2.label() }}
               </div>
-              {{ form2.newLookback(class="form-control", placeholder="e.g. 6")}}
+              {{ form2.newLookback2(class="form-control", placeholder="e.g. 6")}}
     
               <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.2rem">
-                {{ form2.newLoss.label() }}
+                {{ form2.newLoss2.label() }}
               </div>
-              {{ form2.newLoss(class="form-control", placeholder="Select an option")}}
+              {{ form2.newLoss2(class="form-control", placeholder="Select an option")}}
     
               <div class="container mt-4 mb-1 mx-10 p-1 border border-dark font-weight-bolder text-center shadow" style="font-size:1.2rem">
-                {{ form2.newOptimizer.label() }}
+                {{ form2.newOptimizer2.label() }}
               </div>
-              {{ form2.newOptimizer(class="form-control", placeholder="Select an option")}}
+              {{ form2.newOptimizer2(class="form-control", placeholder="Select an option")}}
     
               <br>
     
               <div class="text-center mb-5">
                 <div>
-                {{ form2.submitmodel(class='btn btn-md-md btn-outline-dark btn-light', onclick="startLoading()") }}
-                </div>
-                <div class="mt-2">
-                  {{ form2.submitsave(class='btn btn-outline-dark btn-light', onclick="startLoading()") }}
+                {{ form2.submitmodel2(class='btn btn-md-md btn-outline-dark btn-light', onclick="startLoading()") }}
+                <input type="hidden" name="form2button1" id="form2button1" value="True">
                 </div>
               </div>
             </form>
@@ -183,6 +180,16 @@
         Your model's current RMSE : <strong>{{ errorsDict['newerror'] }}</strong>
       </div>
     </div>
+
+
+    <div class="d-flex d-inline flex-row justify-content-center mt-5">
+      <form method="GET" class="form-register">
+        <input type="hidden" name="final" value="{{errorsDict['final'].to_json()}}">
+        <button type="submit" class="btn btn-light btn-outline-dark shadow" style="font-size:1.5rem">Download CSV data</button>
+      </form>
+      <a class="btn btn-light btn-outline-dark shadow mb-3" style="font-size:1.5rem" href="{{ url_for('deploy_page') }}">Deploy the current model</a>
+    </div>
+
 
   </div>
 </div> 

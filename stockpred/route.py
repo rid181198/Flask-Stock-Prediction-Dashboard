@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, url_for, flash, session, redirect
+from flask import Flask, request, render_template, url_for, flash, session, redirect, make_response
 from stockpred import app
 import pandas as pd
 import json
@@ -12,6 +12,8 @@ from tensorflow.keras.optimizers.legacy import Adam, SGD, RMSprop
 from flask_login import login_user, logout_user, login_required, current_user
 from stockpred import db
 import time
+import io
+
 
 @app.route('/')
 @app.route('/home')
@@ -31,6 +33,9 @@ def dashboard_page():
     longPredInput=False
     cancelModel=False
     cancelLong=False 
+    session['form1_clicked']=False
+    session['form2_clicked']=False
+    session['form4_clicked']=False
     newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
                     newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays = 0,0,0,0,0,0,0,0,0,0,0
 
@@ -47,6 +52,14 @@ def dashboard_page():
         form0.code.data = session['code']
         code=session['code']
 
+    if request.method == 'POST':
+        if request.form.get('form1button1'):
+            session['form1_clicked'] = True
+        if request.form.get('form2button1'):
+            session['form2_clicked'] = True
+        if request.form.get('form4button1'):
+            session['form4_clicked'] = True
+
     if form1.validate_on_submit():
         if form1.submitmodel.data:
             changeModel=True
@@ -61,49 +74,89 @@ def dashboard_page():
                 newOptimizer = SGD()
             if newOptimizer == 'RMSprop':
                 newOptimizer = RMSprop()
+        if form1.submitmodel.data and len(code) == 0 :
+            flash("Please enter the code first and run the prediction model!", category='danger') 
+
+
+  
+    form1errors=[]
+    for err_msg in form1.errors.values():
+        form1errors.append(err_msg)
+
 
     if form4.validate_on_submit():
-        numDays = form4.numdays.data
-        longPredInput = True
+        if form4.longprediction.data:
+            numDays = form4.numdays.data
+            longPredInput = True
+        if form4.longprediction.data and len(code) == 0 :
+            flash("Please enter the code first and run the prediction model!", category='danger') 
+
+    form4errors=[]
+    for err_msg in form4.errors.values():
+        form4errors.append(err_msg)
+
 
     if form2.validate_on_submit():
-        if form2.submitmodel.data:
+        if form2.submitmodel2.data:
             changelongPredMod =True
-            newLongLookback = form2.newLookback.data
-            newLongEpoch = form2.newEpoch.data
-            newLongNeuron = form2.newNeuron.data
-            newLongLoss = form2.newLoss.data
-            newLongOptimizer = form2.newOptimizer.data
+            newLongLookback = form2.newLookback2.data
+            newLongEpoch = form2.newEpoch2.data
+            newLongNeuron = form2.newNeuron2.data
+            newLongLoss = form2.newLoss2.data
+            newLongOptimizer = form2.newOptimizer2.data
             if newLongOptimizer == 'Adam':
                 newLongOptimizer = Adam()
             if newLongOptimizer == 'SGD':
                 newLongOptimizer = SGD()
             if newLongOptimizer == 'RMSprop':
                 newLongOptimizer = RMSprop()
+        if form2.submitmodel2.data and len(code) == 0 :
+            flash("Please enter the code first and run the prediction model!", category='danger') 
+    form2errors=[]
+    for err_msg in form2.errors.values():
+        form2errors.append(err_msg)
+
 
     if form3.validate_on_submit():
         if form3.cancelmodel.data:
-            cancelModel = True
+            if session['code']:
+                cancelModel = True
+            else:
+                flash("Please enter the code first and run the prediction model!", category='danger')
+
         if form3.cancellongmodel.data:
-            cancelLong=True
+            if session['code']:
+                cancelLong=True
+            else:
+                flash("Please enter the code first and run the prediction model!", category='danger')
 
 
     if code:
-        fig, globalerror, modelerror, newerror, final = dash.updates(code, changeModel, longPredInput,\
-                    changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
-                        newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays)
-        #Create graphJSON
-        graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-        errorsDict = {'globalerror': globalerror, 'modelerror': modelerror, 'newerror': newerror, 'final': final}
-        return render_template('dashboard.html',  form0=form0, form1=form1, form2=form2, form3 = form3, form4 = form4, graphJSON=graphJSON, errorsDict = errorsDict, code=code)
+        try:
+            fig, globalerror, modelerror, newerror, final = dash.updates(code, changeModel, longPredInput,\
+                        changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
+                            newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays)
+            #Create graphJSON
+            graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+            errorsDict = {'globalerror': globalerror, 'modelerror': modelerror, 'newerror': newerror, 'final': final}
 
+        
+            return render_template('dashboard.html',  form0=form0, form1=form1,form1errors=form1errors, form2=form2,\
+                                   form2errors=form2errors, form3 = form3, form4 = form4,\
+                                     form4errors=form4errors, graphJSON=graphJSON, errorsDict = errorsDict, code=code)
+        except:
+            flash('You have entered the wrong code! Please look at the meta data guide in the settings.', category='danger')
+            return redirect(url_for('dashboard_page'))
+        
     else:
-        errorsDict = {'globalerror': 0, 'modelerror': 0, 'newerror': 0, 'final': 0}
+        errorsDict = {'globalerror': 0, 'modelerror': 0, 'newerror': 0, 'final': pd.DataFrame()}
+
     #else:
     #    fig = px.line(template='plotly_dark')
     #    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     #    flash(f"Please enter the code", category='danger')
-    return render_template('dashboard.html',  form0=form0, form1=form1, form2=form2, form3 = form3, form4 = form4, errorsDict = errorsDict)
+    return render_template('dashboard.html',  form0=form0, form1=form1, form1errors=form1errors,\
+                            form2=form2,form2errors=form2errors,form3 = form3, form4 = form4,form4errors=form4errors, errorsDict = errorsDict)
 
 
 
@@ -118,7 +171,12 @@ def register_page():
         
         db.session.add(user_to_create)
         db.session.commit()
-        flash(f"Account created successfully! You are now logged in as {user_to_create.username}", category='success')
+        login_user(user_to_create)
+        flash(f"Account created successfully! You are now logged in as {user_to_create.username} and use the dashboard.", category='success')
+        return redirect(url_for('dashboard_page'))
+    if form0.errors != {}:
+        for err_msg in form0.errors.values():
+            flash(f"There was an error with creating a user: {err_msg}", category = 'danger')
     return render_template('register.html', form0 = form0)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -127,10 +185,29 @@ def login_page():
     if form.validate_on_submit():
         attempted_user = User.query.filter_by(email_address = form.email_address.data).first()
         if attempted_user and attempted_user.check_password(attempted_password = form.password.data):
-            flash(f'Success! You are logged in as: {attempted_user.email_address}', category='success')
+            login_user(attempted_user)
+            flash(f'Success! You are logged in as: {attempted_user.username}', category='success')
             return redirect(url_for('dashboard_page'))
         else:
             flash('Username and password are not match! Please try again', category='danger')
     return render_template('login.html', form=form)
 
+@app.route('/logout')
+def logout_page():
+    logout_user()
+    flash("You have been logged out!", category = 'info')
+    return redirect(url_for('home_page'))
 
+@app.route('/deployment')
+@login_required
+def deploy_page():
+    return render_template('deployment.html')
+
+@app.route('/download', methods=['POST'])
+def download():
+        final = request.form['final']
+        df = pd.read_csv(io.StringIO(final))
+        response = make_response(df.to_csv())
+        response.headers.set('Content-Disposition', 'attachment', filename='final.csv')
+        response.headers.set('Content-Type', 'text/csv')
+        return response

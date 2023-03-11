@@ -9,6 +9,7 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from datetime import datetime
 
+
 class preProcessing():
     
     def __init__(self, dataset, lookback):
@@ -17,19 +18,20 @@ class preProcessing():
         
       
     #loading the data
-    def dataLoading(self, startDate='2023-02-28'):
+    def dataLoading(self, startDate='2023-03-07'):
         #filtering the target variable
         
     
         
         booleanCond=[]
+        
         for i in self.dataset['Date']:
             i=datetime.date(i)
             if i<=datetime.date(datetime.strptime(startDate, '%Y-%m-%d')):
                 booleanCond.append(True)
             else:
                 booleanCond.append(False)
-       
+
         self.dateTarget = self.dataset[booleanCond].Date
         
         self.closeTarget = self.dataset[booleanCond]['Close'].values

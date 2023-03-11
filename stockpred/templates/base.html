@@ -43,14 +43,28 @@
                 </li>
             </ul>
         
-            <ul class="navbar-nav ms-auto me-0">
-                <li class="nav-item">
-                    <a class="nav-link navtext" href="{{ url_for('login_page')}}">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link navtext" href="{{ url_for('register_page')}}">Register</a>
-                </li>
-            </ul>
+            {% if current_user.is_authenticated %}
+                <ul class="navbar-nav ms-auto me-0">
+                    <li class="nav-item">
+                        <a class="nav-link navtext" href="{{ url_for('deploy_page') }}">Deployed models </a>
+                    </li>
+                    <li class="nav-item">
+                            <a class="nav-link navtext">Welcome, {{current_user.username}} </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link navtext" href="{{ url_for('logout_page')}}">Logout</a>
+                    </li>
+                </ul>
+            {% else %}
+                <ul class="navbar-nav ms-auto me-0">
+                    <li class="nav-item">
+                        <a class="nav-link navtext" href="{{ url_for('login_page')}}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link navtext" href="{{ url_for('register_page')}}">Register</a>
+                    </li>
+                </ul>
+            {% endif %}
         </div>
     </div>
 
@@ -69,6 +83,43 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
+  
+    {% if session.get('form1_clicked') %}
+        {% for form1error in form1errors %}
+            <div class="alert alert-danger d-flex flex-row-reverse align-items-center">
+                <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close">
+                </button>
+                <div class="flex-grow-1" style="font-size:1.1rem">
+                    <p style="font-size:1.1rem">There was an error in the changing the model form: {{ form1error }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if session.get('form2_clicked') %}
+        {% for form2error in form2errors %}
+            <div class="alert alert-danger d-flex flex-row-reverse align-items-center">
+                <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close">
+                </button>
+                <div class="flex-grow-1" style="font-size:1.1rem">
+                    <p style="font-size:1.1rem">There was an error in the changing the long prediction model form: {{ form2error }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if session.get('form4_clicked') %}
+        {% for form4error in form4errors %}
+            <div class="alert alert-danger d-flex flex-row-reverse align-items-center">
+                <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close">
+                </button>
+                <div class="flex-grow-1" style="font-size:1.1rem">
+                    <p style="font-size:1.1rem">There was an error in the long prediction form: {{ form4error }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
     {% block content %}
 

@@ -3,8 +3,10 @@
     Home page
 {% endblock %}
 {% block content %}
-    
 
-
+<form method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.stop(class='btn btn-md-md btn-outline-dark btn-light me-5',style="font-size:1.5rem", onclick="startLoading()") }}
+</form>
 
 {% endblock %}

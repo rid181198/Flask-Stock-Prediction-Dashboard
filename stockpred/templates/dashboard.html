@@ -183,9 +183,9 @@
 
 
     <div class="d-flex d-inline flex-row justify-content-center mt-5">
-      <form method="GET" class="form-register">
-        <input type="hidden" name="final" value="{{errorsDict['final'].to_json()}}">
-        <button type="submit" class="btn btn-light btn-outline-dark shadow" style="font-size:1.5rem">Download CSV data</button>
+      <form method="POST">
+        {{ form5.hidden_tag() }}
+        {{ form5.download(class='btn btn-md-md btn-outline-dark btn-light me-5',style="font-size:1.5rem", onclick="startLoading()") }}
       </form>
       <a class="btn btn-light btn-outline-dark shadow mb-3" style="font-size:1.5rem" href="{{ url_for('deploy_page') }}">Deploy the current model</a>
     </div>

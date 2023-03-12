@@ -46,10 +46,10 @@
             {% if current_user.is_authenticated %}
                 <ul class="navbar-nav ms-auto me-0">
                     <li class="nav-item">
-                        <a class="nav-link navtext" href="{{ url_for('deploy_page') }}">Deployed models </a>
+                        <a class="nav-link navtext"><strong>Welcome, {{current_user.username}}</strong> </a>
                     </li>
                     <li class="nav-item">
-                            <a class="nav-link navtext">Welcome, {{current_user.username}} </a>
+                        <a class="nav-link navtext" href="{{ url_for('deploy_page') }}">Deployed models </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link navtext" href="{{ url_for('logout_page')}}">Logout</a>

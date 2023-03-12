@@ -39,3 +39,9 @@ class DashFormNewLongModel(FlaskForm):
                                                     ('RMSprop','RMSprop')])
     submitmodel2 = SubmitField(label='Change the model')
     #submitsave2 = SubmitField(label='Save the model')
+
+class DownloadForm(FlaskForm):
+    download = SubmitField(label='Download the CSV data')
+
+class StopDeploy(FlaskForm):
+    stop=SubmitField(label='Stop the deployed model')

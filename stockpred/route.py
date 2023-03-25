@@ -11,6 +11,7 @@ from stockpred.models.register import User, Userdata
 from tensorflow.keras.optimizers.legacy import Adam, SGD, RMSprop
 from flask_login import login_user, logout_user, login_required, current_user
 from stockpred import db
+import uuid
 import time
 import io
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -27,6 +28,7 @@ def home_page():
 def clear_session():
     session.clear()
     session['code'] = ''
+    
 @app.route('/dashboard', methods=['GET','POST'])
 def dashboard_page():
     changeModel=False
@@ -209,6 +211,7 @@ def logout_page():
     flash("You have been logged out!", category = 'info')
     return redirect(url_for('home_page'))
 
+
 def my_function():
     print('hh')
 scheduler = BackgroundScheduler()
@@ -218,24 +221,29 @@ scheduler.start()
 def deploy_page():
     form = StopDeploy()
   
-    job = Userdata.query.filter_by(id = current_user.id).first()
+    job = Userdata.query.filter_by(owner = current_user.id).first()
     if job:
         job_id = job.job_id
+        scheduler.resume_job(job_id)
     else:
-        job_id = session.get('session_id') + '_model'
-        job = Userdata(job_id = job_id, id = current_user.id)
+        job_id = str(uuid.uuid4()) + '_model'
+        job = Userdata(job_id = job_id, owner = current_user.id)
         db.session.add(job)
         db.session.commit()
         scheduler.add_job(func = my_function, trigger='interval', seconds=5, id=job_id)
+    session['job_id'] = job_id
 
     if request.method == 'POST':
         if form.validate_on_submit():
             if form.stop.data:
                 job_id = session.get('job_id')
-                scheduler.remove_job(job_id)
-                job = Userdata.query.filter_by(job_id=job_id)
+                try:
+                    scheduler.remove_job(job_id)
+                except:
+                    pass
+                job = Userdata.query.filter_by(job_id=job_id).first()
                 db.session.delete(job)
                 db.session.commit()
                 print("stopped!")
-    session['job_id'] = job_id
+    
     return render_template('deployment.html', form=form)

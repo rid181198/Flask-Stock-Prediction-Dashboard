@@ -26,11 +26,11 @@ class User(db.Model, UserMixin):
 
 class Userdata(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
-    job_id = db.Column(db.String(50))
+    job_id = db.Column(db.String(length=50))
     json_data = db.Column(db.String(), default='')
     owner = db.Column(db.Integer(), db.ForeignKey('user.id'))
 
-    def __init__(self, df):
-        self.json_data = df.to_json()
+    #def __init__(self, df):
+    #    self.json_data = df.to_json()
 
     

@@ -211,19 +211,31 @@ def logout_page():
 
 def my_function():
     print('hh')
-
+scheduler = BackgroundScheduler()
+scheduler.start()
 @app.route('/deployment',methods=['GET','POST'])
 @login_required
 def deploy_page():
     form = StopDeploy()
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(func=my_function, trigger='interval', seconds=5)
-    scheduler.start()
+  
+    job = Userdata.query.filter_by(id = current_user.id).first()
+    if job:
+        job_id = job.job_id
+    else:
+        job_id = session.get('session_id') + '_model'
+        job = Userdata(job_id = job_id, id = current_user.id)
+        db.session.add(job)
+        db.session.commit()
+        scheduler.add_job(func = my_function, trigger='interval', seconds=5, id=job_id)
+
     if request.method == 'POST':
         if form.validate_on_submit():
             if form.stop.data:
-                scheduler.shutdown()
-                print('stopped!')
-        
-
+                job_id = session.get('job_id')
+                scheduler.remove_job(job_id)
+                job = Userdata.query.filter_by(job_id=job_id)
+                db.session.delete(job)
+                db.session.commit()
+                print("stopped!")
+    session['job_id'] = job_id
     return render_template('deployment.html', form=form)

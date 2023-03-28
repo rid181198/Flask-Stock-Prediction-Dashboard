@@ -31,6 +31,10 @@ def clear_session():
     
 @app.route('/dashboard', methods=['GET','POST'])
 def dashboard_page():
+    global code, changeModel, longPredInput,\
+        changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
+        newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays, fig, globalerror, modelerror, newerror, final
+
     changeModel=False
     changelongPredMod=False
     longPredInput=False
@@ -211,9 +215,35 @@ def logout_page():
     flash("You have been logged out!", category = 'info')
     return redirect(url_for('home_page'))
 
-
+count=0
 def my_function():
-    print('hh')
+    global count
+    if count==0:
+        dcode, dchangeModel, dlongPredInput,\
+        dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
+        dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays =code, changeModel, longPredInput,\
+        changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
+        newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays
+
+        dfig, dglobalerror, dmodelerror, dnewerror, dfinal = fig, globalerror, modelerror, newerror, final
+    
+    if count>0:
+        dfig, dglobalerror, dmodelerror, dnewerror, dfinal = dash.updates(dcode, dchangeModel, dlongPredInput,\
+            dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
+            dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays)
+        
+        dchangeModel=False
+        dchangelongPredMod=False
+        dlongPredInput=False
+        dcancelModel=False
+        dcancelLong=False 
+        
+    #Create graphJSON
+    graphJSON = json.dumps(dfig, cls=plotly.utils.PlotlyJSONEncoder)
+    errorsDict = {'globalerror': dglobalerror, 'modelerror': dmodelerror, 'newerror': dnewerror, 'final': dfinal}
+    print(dchangeModel)
+    count+=1
+
 scheduler = BackgroundScheduler()
 scheduler.start()
 @app.route('/deployment',methods=['GET','POST'])
@@ -230,7 +260,7 @@ def deploy_page():
         job = Userdata(job_id = job_id, owner = current_user.id)
         db.session.add(job)
         db.session.commit()
-        scheduler.add_job(func = my_function, trigger='interval', seconds=5, id=job_id)
+        scheduler.add_job(func = my_function, trigger='interval', seconds=60, id=job_id)
     session['job_id'] = job_id
 
     if request.method == 'POST':
@@ -244,6 +274,7 @@ def deploy_page():
                 job = Userdata.query.filter_by(job_id=job_id).first()
                 db.session.delete(job)
                 db.session.commit()
+                count=0
                 print("stopped!")
     
     return render_template('deployment.html', form=form)

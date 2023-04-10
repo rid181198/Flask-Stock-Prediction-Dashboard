@@ -3,6 +3,7 @@ from stockpred import app
 import pandas as pd
 import json
 import stockpred.scripts.dashboard as dash
+import stockpred.scripts.dashboardDeploy as dashdep
 import plotly
 import plotly.express as px
 from stockpred.forms.dashform import DashFormNewModel, DashFormNewLongModel, generalInputs, cancelForm, longpredForm, DownloadForm, StopDeploy
@@ -216,19 +217,25 @@ def logout_page():
     return redirect(url_for('home_page'))
 
 count=0
+dcode, dchangeModel, dlongPredInput,\
+        dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
+        dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays = None, None,None,None,\
+        None,None,None,None,None,None,None,None,None,None,None,None,None
 def my_function():
-    global count
+    global count,dcode, dchangeModel, dlongPredInput,\
+        dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
+        dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays
     if count==0:
         dcode, dchangeModel, dlongPredInput,\
         dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
-        dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays =code, changeModel, longPredInput,\
+        dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays = code, changeModel, longPredInput,\
         changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
         newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays
 
         dfig, dglobalerror, dmodelerror, dnewerror, dfinal = fig, globalerror, modelerror, newerror, final
     
     if count>0:
-        dfig, dglobalerror, dmodelerror, dnewerror, dfinal = dash.updates(dcode, dchangeModel, dlongPredInput,\
+        dfig, dglobalerror, dmodelerror, dnewerror, dfinal = dashdep.updates(dcode, dchangeModel, dlongPredInput,\
             dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
             dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays)
         
@@ -241,8 +248,9 @@ def my_function():
     #Create graphJSON
     graphJSON = json.dumps(dfig, cls=plotly.utils.PlotlyJSONEncoder)
     errorsDict = {'globalerror': dglobalerror, 'modelerror': dmodelerror, 'newerror': dnewerror, 'final': dfinal}
-    print(dchangeModel)
     count+=1
+
+    return graphJSON, errorsDict
 
 scheduler = BackgroundScheduler()
 scheduler.start()
@@ -250,7 +258,8 @@ scheduler.start()
 @login_required
 def deploy_page():
     form = StopDeploy()
-  
+    graphJSON = None
+    errorsDict = {'globalerror': 0, 'modelerror': 0, 'newerror': 0, 'final': pd.DataFrame()}
     job = Userdata.query.filter_by(owner = current_user.id).first()
     if job:
         job_id = job.job_id
@@ -260,7 +269,8 @@ def deploy_page():
         job = Userdata(job_id = job_id, owner = current_user.id)
         db.session.add(job)
         db.session.commit()
-        scheduler.add_job(func = my_function, trigger='interval', seconds=60, id=job_id)
+        jobres =  scheduler.add_job(func = my_function, trigger='interval', seconds=60, id=job_id)
+        graphJSON, errorsDict = jobres.run()
     session['job_id'] = job_id
 
     if request.method == 'POST':
@@ -277,4 +287,4 @@ def deploy_page():
                 count=0
                 print("stopped!")
     
-    return render_template('deployment.html', form=form)
+    return render_template('deployment.html', form=form, graphJSON=graphJSON, errorsDict = errorsDict)

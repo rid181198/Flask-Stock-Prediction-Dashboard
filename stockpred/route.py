@@ -221,10 +221,13 @@ dcode, dchangeModel, dlongPredInput,\
         dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
         dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays = None, None,None,None,\
         None,None,None,None,None,None,None,None,None,None,None,None,None
+dgraphJSON, derrorsDict = None, None
+
 def my_function():
     global count,dcode, dchangeModel, dlongPredInput,\
         dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
         dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays
+    global dgraphJSON, derrorsDict
     if count==0:
         dcode, dchangeModel, dlongPredInput,\
         dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
@@ -246,11 +249,9 @@ def my_function():
         dcancelLong=False 
         
     #Create graphJSON
-    graphJSON = json.dumps(dfig, cls=plotly.utils.PlotlyJSONEncoder)
-    errorsDict = {'globalerror': dglobalerror, 'modelerror': dmodelerror, 'newerror': dnewerror, 'final': dfinal}
+    dgraphJSON = json.dumps(dfig, cls=plotly.utils.PlotlyJSONEncoder)
+    derrorsDict = {'globalerror': dglobalerror, 'modelerror': dmodelerror, 'newerror': dnewerror, 'final': dfinal}
     count+=1
-
-    return graphJSON, errorsDict
 
 scheduler = BackgroundScheduler()
 scheduler.start()
@@ -258,8 +259,6 @@ scheduler.start()
 @login_required
 def deploy_page():
     form = StopDeploy()
-    graphJSON = None
-    errorsDict = {'globalerror': 0, 'modelerror': 0, 'newerror': 0, 'final': pd.DataFrame()}
     job = Userdata.query.filter_by(owner = current_user.id).first()
     if job:
         job_id = job.job_id
@@ -269,8 +268,8 @@ def deploy_page():
         job = Userdata(job_id = job_id, owner = current_user.id)
         db.session.add(job)
         db.session.commit()
-        jobres =  scheduler.add_job(func = my_function, trigger='interval', seconds=60, id=job_id)
-        graphJSON, errorsDict = jobres.run()
+        scheduler.add_job(func = my_function, trigger='interval', seconds=60, id=job_id)
+        return redirect(url_for('deploy_page'))
     session['job_id'] = job_id
 
     if request.method == 'POST':
@@ -287,4 +286,4 @@ def deploy_page():
                 count=0
                 print("stopped!")
     
-    return render_template('deployment.html', form=form, graphJSON=graphJSON, errorsDict = errorsDict)
+    return render_template('deployment.html', form=form, dgraphJSON=dgraphJSON, derrorsDict = derrorsDict)

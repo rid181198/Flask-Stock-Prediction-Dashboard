@@ -9,22 +9,98 @@
     {{ form.stop(class='btn btn-md-md btn-outline-dark btn-light me-5',style="font-size:1.5rem", onclick="startLoading()") }}
 </form>
 
-
-<div class="d-flex d-inline flex-row justify-content-center">
-    <div class="container mb-2 p-2 border border-dark font-weight-bolder text-center shadow" id="errors" style="font-size:1.5rem">
-    Default model's global RMSE : <strong>{{ errorsDict['globalerror'] }}</strong>
-    </div>
-    
-    <div class="container mb-2 p-2 border border-dark font-weight-bolder text-center shadow" id="errors" style="font-size:1.5rem">
-    Default model's current RMSE : <strong>{{ errorsDict['modelerror'] }}</strong>
+<div class="d-flex flex-column">
+    <div class="d-grid">
+        <div id="chart" class="chart"></div>
     </div>
 
+    <div class="d-flex d-inline flex-row justify-content-center">
+        <div class="container mb-2 p-2 border border-dark font-weight-bolder text-center shadow" id="errors" style="font-size:1.5rem">
+        Default model's global RMSE : <strong>{{ derrorsDict['globalerror'] }}</strong>
+        </div>
+        
+        <div class="container mb-2 p-2 border border-dark font-weight-bolder text-center shadow" id="errors" style="font-size:1.5rem">
+        Default model's current RMSE : <strong>{{ derrorsDict['modelerror'] }}</strong>
+        </div>
+
+    </div>
+
+    <div class="d-flex d-inline justify-content-center mt-3">
+        <div class="container mb-2 p-2 border border-dark font-weight-bolder text-center shadow" id="errors" style="font-size:1.5rem">
+        Your model's current RMSE : <strong>{{ derrorsDict['newerror'] }}</strong>
+        </div>
+    </div>
 </div>
 
-<div class="d-flex d-inline justify-content-center mt-3">
-    <div class="container mb-2 p-2 border border-dark font-weight-bolder text-center shadow" id="errors" style="font-size:1.5rem">
-    Your model's current RMSE : <strong>{{ errorsDict['newerror'] }}</strong>
-    </div>
-</div>
 
+<script type="text/javascript">
+    var graphs = {{dgraphJSON | safe}};
+    var container = document.getElementById('chart');
+    Plotly.plot('chart', graphs, {});
+  
+    function resizePlot() {
+      var layout = {
+        width: window.innerWidth * 0.999, // Adjust the scaling factor as needed
+        height: window.innerHeight * 0.8, // Adjust the scaling factor as needed
+        legend: { font: { size: window.innerWidth * 0.02 } },
+      yaxis: {
+        title: 'Stock price',
+        tickfont: {
+        size: window.innerWidth * 0.018 // Change the font size as needed
+        },
+        titlefont: { size: window.innerWidth * 0.018 },
+        showgrid: false,
+        showticklabels: true,
+        showline: true,
+        showtickmode: "linear"
+        
+      },
+      xaxis: {
+        title: 'Date',
+        tickfont: {
+        size: window.innerWidth * 0.018 // Change the font size as needed
+        },
+        titlefont: { size: window.innerWidth * 0.018 },
+        showgrid: false,
+        showticklabels: true,
+        showline: true,
+        showtickmode: "linear"
+      },
+      title: {
+        text: 'Real time stock prediction of {{ code }}',
+        font: { size: window.innerWidth * 0.028 },
+        xref: 'paper',
+        x: 0.5,
+        yref:'paper',
+        y:0.995,
+      },
+      plot_bgcolor: 'rgb(245, 245, 245)', 
+      paper_bgcolor: 'rgb(245, 245, 245)'
+      };
+  
+      if (window.innerWidth <= 800) {
+      layout.legend = {
+        font: { size: window.innerWidth * 0.018 },
+        orientation: 'h',
+        yanchor: 'top',
+        xanchor: 'center',
+        x: 0.5,
+        y: 1.28
+      };
+      } else {
+        layout.legend = {
+          font: { size: window.innerWidth * 0.018 },
+        };
+      }
+  
+      Plotly.relayout(container, layout);
+    }
+  
+    // Call resizePlot() on load and add a listener for the 'resize' event
+    resizePlot();
+    window.addEventListener('resize', function() {
+      window.requestAnimationFrame(resizePlot);
+    });
+  </script>
+  
 {% endblock %}

@@ -1,32 +1,16 @@
 
 
 import stockpred.scripts.modelPred as mp
-import stockpred.scripts.dashboardDeploy as dashappdep
 from datetime import timedelta
-
 from datetime import date
+import json
 
-
-    
-    
-    
-    
-    
-globalPred = []
-globalReal = []
-prevCode=''
-dataset, history, historyDate, train, target, realTarget, predTarget,\
-    model, scaler, lookback, lookbackData, epochs, dates, longpredTarget,\
-        longmodel,longscaler = 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-        
-trainv2,targetv2,realTargetv2,predTargetv2,\
-            modelv2,scalerv2,\
-                lookbackDatav2,lookbackv2, epochsv2 = 0,0,0,0,0,0,0,0,0
-longpredTargetFin=0
-
-
-
-def updates(code, changeModel, longPredInput,\
+def updates(globalPred, globalReal, prevCode, dataset, history, historyDate, train, target, realTarget,\
+        predTarget, model, scaler, lookback, lookbackData, epochs, dates, longpredTarget,\
+        longmodel,longscaler,\
+    trainv2,targetv2,realTargetv2,predTargetv2,\
+    modelv2,scalerv2,lookbackDatav2,lookbackv2, epochsv2, longpredTargetFin,\
+        code, changeModel, longPredInput,\
                 changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
                     newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays):
     
@@ -37,37 +21,56 @@ def updates(code, changeModel, longPredInput,\
     model, scaler, lookback, lookbackData, epochs, dates, longpredTarget,\
     longmodel,longscaler,trainv2,targetv2,realTargetv2,predTargetv2,\
     modelv2,scalerv2,lookbackDatav2,lookbackv2, epochsv2,globalPred, globalReal, longpredTargetFin, final=\
-    mp.realTimePred(dashappdep.globalPred, dashappdep.globalReal, code, changeModel, longPredInput,\
-    changelongPredMod, cancelModel, cancelLong, dashappdep.prevCode, \
-    dashappdep.dataset, dashappdep.history, dashappdep.historyDate, dashappdep.train, dashappdep.target, dashappdep.realTarget, dashappdep.predTarget,\
-    dashappdep.model, dashappdep.scaler, dashappdep.lookback, dashappdep.lookbackData, dashappdep.epochs, dashappdep.dates, dashappdep.longpredTarget,\
-    dashappdep.longmodel,dashappdep.longscaler,
-    dashappdep.trainv2,dashappdep.targetv2,dashappdep.realTargetv2,dashappdep.predTargetv2,\
-    dashappdep.modelv2,dashappdep.scalerv2,\
-    dashappdep.lookbackDatav2,dashappdep.lookbackv2, dashappdep.epochsv2, dashappdep.longpredTargetFin,\
+    mp.realTimePred(globalPred, globalReal, code, changeModel, longPredInput,\
+    changelongPredMod, cancelModel, cancelLong, prevCode, \
+    dataset, history, historyDate, train, target, realTarget, predTarget,\
+    model, scaler, lookback, lookbackData, epochs, dates, longpredTarget,\
+    longmodel,longscaler,trainv2,targetv2,realTargetv2,predTargetv2,\
+    modelv2,scalerv2,lookbackDatav2,lookbackv2, epochsv2,longpredTargetFin,\
         newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
             newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays)
         
   
     
-    
-    dashappdep.prevCode = newCode
-    dashappdep.dataset, dashappdep.history, dashappdep.historyDate, dashappdep.train, dashappdep.target, dashappdep.realTarget, dashappdep.predTarget,\
-    dashappdep.model, dashappdep.scaler, dashappdep.lookback, dashappdep.lookbackData, dashappdep.epochs, dashappdep.dates, dashappdep.longpredTarget,\
-    dashappdep.longmodel,dashappdep.longscaler = dataset, history, historyDate, train, target, realTarget, predTarget,\
-    model, scaler, lookback, lookbackData, epochs, dates, longpredTarget,longmodel,longscaler
-                    
-    dashappdep.trainv2,dashappdep.targetv2,dashappdep.realTargetv2,dashappdep.predTargetv2,\
-    dashappdep.modelv2,dashappdep.scalerv2,dashappdep.lookbackDatav2,dashappdep.lookbackv2, dashappdep.epochsv2=\
-    trainv2,targetv2,realTargetv2,predTargetv2,modelv2,scalerv2,lookbackDatav2,lookbackv2, epochsv2
-    
-    dashappdep.globalPred, dashappdep.globalReal, dashappdep.longpredTargetFin= globalPred, globalReal, longpredTargetFin
-  
-    return fig, rmseGlobal,\
-        rmseModel,\
-           rmseNew, final
+    variables = {'fig': fig,
+           'rmseGlobal': rmseGlobal,
+           'rmseModel': rmseModel,
+           'rmseNew': rmseNew,
+           'newCode': newCode,
+           'dataset': dataset,
+           'history': history,
+           'historyDate': historyDate,
+           'train': train,
+           'target': target,
+           'realTarget': realTarget,
+           'predTarget': predTarget,
+           'model': model,
+           'scaler': scaler,
+           'lookback': lookback,
+           'lookbackData': lookbackData,
+           'epochs': epochs,
+           'dates': dates,
+           'longpredTarget': longpredTarget,
+           'longmodel': longmodel,
+           'longscaler': longscaler,
+           'trainv2': trainv2,
+           'targetv2': targetv2,
+           'realTargetv2': realTargetv2,
+           'predTargetv2': predTargetv2,
+           'modelv2': modelv2,
+           'scalerv2': scalerv2,
+           'lookbackDatav2': lookbackDatav2,
+           'lookbackv2': lookbackv2,
+           'epochsv2': epochsv2,
+           'globalPred': globalPred,
+           'globalReal': globalReal,
+           'longpredTargetFin': longpredTargetFin,
+           'final': final}
+
+    variables = json.dumps(variables)
 
 
+    return variables
 
 
 

@@ -29,7 +29,7 @@ class Userdata(db.Model):
     job_id = db.Column(db.String(length=50))
     json_data = db.Column(db.String(), default='')
     owner = db.Column(db.Integer(), db.ForeignKey('user.id'))
-
+    variables = db.Column(db.String(), default='')
     #def __init__(self, df):
     #    self.json_data = df.to_json()
 

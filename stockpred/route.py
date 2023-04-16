@@ -263,12 +263,14 @@ def deploy_page():
     if job:
         job_id = job.job_id
         scheduler.resume_job(job_id)
+        job.json_data = dgraphJSON
     else:
         job_id = str(uuid.uuid4()) + '_model'
         job = Userdata(job_id = job_id, owner = current_user.id)
         db.session.add(job)
         db.session.commit()
         scheduler.add_job(func = my_function, trigger='interval', seconds=60, id=job_id)
+        job.json_data = dgraphJSON
         return redirect(url_for('deploy_page'))
     session['job_id'] = job_id
 

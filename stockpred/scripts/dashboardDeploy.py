@@ -65,7 +65,25 @@ def updates(globalPred, globalReal, prevCode, dataset, history, historyDate, tra
            'globalPred': globalPred,
            'globalReal': globalReal,
            'longpredTargetFin': longpredTargetFin,
-           'final': final}
+           'final': final,
+           "code": None,
+            "changeModel": None,
+            "longPredInput": None,
+            "changelongPredMod": None,
+            "cancelModel": None,
+            "cancelLong": None,
+            "newLookback": None,
+            "newEpoch": None,
+            "newNeuron": None,
+            "newLoss": None,
+            "newOptimizer": None,
+            "newLongLookback": None,
+            "newLongEpoch": None,
+            "newLongNeuron": None,
+            "newLongLoss": None,
+            "newLongOptimizer": None,
+            "numDays": None,
+            "count":0}
 
     variables = json.dumps(variables)
 

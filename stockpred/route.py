@@ -216,18 +216,11 @@ def logout_page():
     flash("You have been logged out!", category = 'info')
     return redirect(url_for('home_page'))
 
-count=0
-dcode, dchangeModel, dlongPredInput,\
-        dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
-        dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays = None, None,None,None,\
-        None,None,None,None,None,None,None,None,None,None,None,None,None
-dgraphJSON, derrorsDict = None, None
 
-def my_function():
-    global count,dcode, dchangeModel, dlongPredInput,\
+def my_function(count,dcode, dchangeModel, dlongPredInput,\
         dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
-        dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays
-    global dgraphJSON, derrorsDict
+        dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays):
+   
     if count==0:
         dcode, dchangeModel, dlongPredInput,\
         dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
@@ -262,14 +255,27 @@ def deploy_page():
     job = Userdata.query.filter_by(owner = current_user.id).first()
     if job:
         job_id = job.job_id
+        json_data = job.json_data
+        variables = job.variables
         scheduler.resume_job(job_id)
-        job.json_data = dgraphJSON
     else:
         job_id = str(uuid.uuid4()) + '_model'
         job = Userdata(job_id = job_id, owner = current_user.id)
         db.session.add(job)
         db.session.commit()
-        scheduler.add_job(func = my_function, trigger='interval', seconds=60, id=job_id)
+
+        count,dcode, dchangeModel, dlongPredInput,\
+        dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
+        dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays = job.variables['count'],\
+        job.variables['code'],job.variables['changeModel'],job.variables['longPredInput'],job.variables['changelongPredMod'],\
+        job.variables['cancelModel'],job.variables['cancelLong'],job.variables['newLookback'],job.variables['newEpoch'],job.variables['newNeuron'],\
+        job.variables['newLoss'],job.variables['newOptimizer'],job.variables['newLongLookback'],job.variables['newLongEpoch'],job.variables['newLongNeuron'],\
+        job.variables['newLongLoss'],job.variables['newLongOptimizer'],job.variables['numDays']
+
+        scheduler.add_job(func = my_function, trigger='interval', seconds=60, id=job_id, args=[count,dcode, dchangeModel, dlongPredInput,\
+        dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
+        dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays])
+        
         job.json_data = dgraphJSON
         return redirect(url_for('deploy_page'))
     session['job_id'] = job_id

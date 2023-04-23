@@ -13,6 +13,8 @@ from tensorflow.keras.optimizers.legacy import Adam, SGD, RMSprop
 from flask_login import login_user, logout_user, login_required, current_user
 from stockpred import db
 import uuid
+import json
+from datetime import datetime
 import time
 import io
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -34,7 +36,7 @@ def clear_session():
 def dashboard_page():
     global code, changeModel, longPredInput,\
         changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
-        newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays, fig, globalerror, modelerror, newerror, final
+        newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays, fig, globalerror, modelerror, newerror, final, graphJSON
 
     changeModel=False
     changelongPredMod=False
@@ -216,35 +218,70 @@ def logout_page():
     flash("You have been logged out!", category = 'info')
     return redirect(url_for('home_page'))
 
+#count,dcode, dchangeModel, dlongPredInput,\
+#        dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
+#        dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays
 
-def my_function(count,dcode, dchangeModel, dlongPredInput,\
-        dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
-        dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays):
+
+#job.variables['count'],\
+#        job.variables['code'],job.variables['changeModel'],job.variables['longPredInput'],job.variables['changelongPredMod'],\
+#        job.variables['cancelModel'],job.variables['cancelLong'],job.variables['newLookback'],job.variables['newEpoch'],job.variables['newNeuron'],\
+#        job.variables['newLoss'],job.variables['newOptimizer'],job.variables['newLongLookback'],job.variables['newLongEpoch'],job.variables['newLongNeuron'],\
+#        job.variables['newLongLoss'],job.variables['newLongOptimizer'],job.variables['numDays']
+
+
+def my_function(variables, job):
    
-    if count==0:
-        dcode, dchangeModel, dlongPredInput,\
-        dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
-        dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays = code, changeModel, longPredInput,\
-        changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
-        newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays
+    if variables['count']>0:
+        dfig, newVariable = dashdep.updates(variables['globalPred'], variables['globalReal'], variables['prevCode'], pd.DataFrame.from_dict(variables['dataset']), pd.DataFrame.from_dict(variables['history']), variables['historyDate'], pd.DataFrame.from_dict(variables['train']), variables['target'], variables['realTarget'],\
+        variables['predTarget'], variables['model'], variables['scaler'], variables['lookback'], variables['lookbackData'], variables['epochs'], datetime.date(datetime.strptime(variables['dates'], '%Y-%m-%d')), variables['longpredTarget'],\
+        variables['longmodel'],variables['longscaler'],pd.DataFrame.from_dict(variables['trainv2']),variables['targetv2'],variables['realTargetv2'],variables['predTargetv2'],\
+    variables['modelv2'],variables['scalerv2'],variables['lookbackDatav2'],variables['lookbackv2'], variables['epochsv2'], variables['longpredTargetFin'],\
+        variables['code'], variables['changeModel'], variables['longPredInput'],\
+                variables['changelongPredMod'], variables['cancelModel'], variables['cancelLong'], variables['newLookback'], variables['newEpoch'], variables['newNeuron'], variables['newLoss'], variables['newOptimizer'],\
+                    variables['newLongLookback'], variables['newLongEpoch'], variables['newLongNeuron'], variables['newLongLoss'], variables['newLongOptimizer'], variables['numDays'])
+        
+    #variables['fig'] = newVariable['fig']
+    variables['rmseGlobal'] = newVariable['rmseGlobal']
+    variables['rmseModel'] = newVariable['rmseModel']
+    variables['rmseNew'] = newVariable['rmseNew']
+    variables['newCode'] = newVariable['newCode']
+    variables['dataset'] = newVariable['dataset']
+    variables['history'] = newVariable['history']
+    variables['historyDate'] = newVariable['historyDate']
+    variables['train'] = newVariable['train']
+    variables['target'] = newVariable['target']
+    variables['realTarget'] = newVariable['realTarget']
+    variables['predTarget'] = newVariable['predTarget']
+    variables['model'] = newVariable['model']
+    variables['scaler'] = newVariable['scaler']
+    variables['lookback'] = newVariable['lookback']
+    variables['lookbackData'] = newVariable['lookbackData']
+    variables['epochs'] = newVariable['epochs']
+    variables['dates'] = newVariable['dates']
+    variables['longpredTarget'] = newVariable['longpredTarget']
+    variables['longmodel'] = newVariable['longmodel']
+    variables['longscaler'] = newVariable['longscaler']
+    variables['trainv2'] = newVariable['trainv2']
+    variables['targetv2'] = newVariable['targetv2']
+    variables['realTargetv2'] = newVariable['realTargetv2']
+    variables['predTargetv2'] = newVariable['predTargetv2']
+    variables['modelv2'] = newVariable['modelv2']
+    variables['scalerv2'] = newVariable['scalerv2']
+    variables['lookbackv2'] = newVariable['lookbackv2']
+    variables['lookbackDatav2'] = newVariable['lookbackDatav2']
+    variables['epochsv2'] = newVariable['epochsv2']
+    variables['globalPred'] = newVariable['globalPred']
+    variables['globalReal'] = newVariable['glovalReal']
+    variables['longpredTargetFin'] = newVariable['longpredTargetFin']
 
-        dfig, dglobalerror, dmodelerror, dnewerror, dfinal = fig, globalerror, modelerror, newerror, final
-    
-    if count>0:
-        dfig, dglobalerror, dmodelerror, dnewerror, dfinal = dashdep.updates(dcode, dchangeModel, dlongPredInput,\
-            dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
-            dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays)
-        
-        dchangeModel=False
-        dchangelongPredMod=False
-        dlongPredInput=False
-        dcancelModel=False
-        dcancelLong=False 
-        
     #Create graphJSON
     dgraphJSON = json.dumps(dfig, cls=plotly.utils.PlotlyJSONEncoder)
-    derrorsDict = {'globalerror': dglobalerror, 'modelerror': dmodelerror, 'newerror': dnewerror, 'final': dfinal}
-    count+=1
+    derrorsDict = {'globalerror': variables['rmseGlobal'], 'modelerror': variables['rmseModel'], 'newerror': variables['rmseNew'], 'final': variables['final']}
+    variables['count'] += 1
+
+    job.variables = variables
+    job.json_data = dgraphJSON
 
 scheduler = BackgroundScheduler()
 scheduler.start()
@@ -260,23 +297,65 @@ def deploy_page():
         scheduler.resume_job(job_id)
     else:
         job_id = str(uuid.uuid4()) + '_model'
-        job = Userdata(job_id = job_id, owner = current_user.id)
+        variables = {'rmseGlobal': globalerror,
+           'rmseModel': modelerror,
+           'rmseNew': newerror,
+           'newCode': '',
+           'dataset': None,
+           'history': None,
+           'historyDate': None,
+           'train': None,
+           'target': None,
+           'realTarget': None,
+           'predTarget': None,
+           'model': None,
+           'scaler': None,
+           'lookback':None,
+           'lookbackData': None,
+           'epochs': None,
+           'dates': None,
+           'longpredTarget': None,
+           'longmodel': None,
+           'longscaler': None,
+           'trainv2':None,
+           'targetv2': None,
+           'realTargetv2': None,
+           'predTargetv2': None,
+           'modelv2': None,
+           'scalerv2': None,
+           'lookbackDatav2': None,
+           'lookbackv2': None,
+           'epochsv2': None,
+           'globalPred': None,
+           'globalReal': None,
+           'longpredTargetFin': None,
+           'final': final.to_dict(),
+           "code": code,
+            "changeModel": changeModel,
+            "longPredInput": longPredInput,
+            "changelongPredMod": changelongPredMod,
+            "cancelModel": cancelModel,
+            "cancelLong": cancelLong,
+            "newLookback": newLookback,
+            "newEpoch": newEpoch,
+            "newNeuron": newNeuron,
+            "newLoss": newLoss,
+            "newOptimizer": newOptimizer,
+            "newLongLookback": newLongLookback,
+            "newLongEpoch": newLongEpoch,
+            "newLongNeuron": newLongNeuron,
+            "newLongLoss": newLongLoss,
+            "newLongOptimizer": newLongOptimizer,
+            "numDays": numDays,
+            "count":0}
+
+        variables = json.dumps(variables)
+        json_data = graphJSON
+        job = Userdata(job_id = job_id, variables = variables, json_data=json_data, owner = current_user.id)
         db.session.add(job)
         db.session.commit()
 
-        count,dcode, dchangeModel, dlongPredInput,\
-        dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
-        dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays = job.variables['count'],\
-        job.variables['code'],job.variables['changeModel'],job.variables['longPredInput'],job.variables['changelongPredMod'],\
-        job.variables['cancelModel'],job.variables['cancelLong'],job.variables['newLookback'],job.variables['newEpoch'],job.variables['newNeuron'],\
-        job.variables['newLoss'],job.variables['newOptimizer'],job.variables['newLongLookback'],job.variables['newLongEpoch'],job.variables['newLongNeuron'],\
-        job.variables['newLongLoss'],job.variables['newLongOptimizer'],job.variables['numDays']
-
-        scheduler.add_job(func = my_function, trigger='interval', seconds=60, id=job_id, args=[count,dcode, dchangeModel, dlongPredInput,\
-        dchangelongPredMod, dcancelModel, dcancelLong, dnewLookback, dnewEpoch, dnewNeuron, dnewLoss, dnewOptimizer,\
-        dnewLongLookback, dnewLongEpoch, dnewLongNeuron, dnewLongLoss, dnewLongOptimizer, dnumDays])
-        
-        job.json_data = dgraphJSON
+        scheduler.add_job(func = my_function, trigger='interval', seconds=60, id=job_id, args=[variables, job])
         return redirect(url_for('deploy_page'))
     session['job_id'] = job_id
 
@@ -291,7 +370,6 @@ def deploy_page():
                 job = Userdata.query.filter_by(job_id=job_id).first()
                 db.session.delete(job)
                 db.session.commit()
-                count=0
                 print("stopped!")
     
     return render_template('deployment.html', form=form, dgraphJSON=dgraphJSON, derrorsDict = derrorsDict)

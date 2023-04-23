@@ -32,15 +32,14 @@ def updates(globalPred, globalReal, prevCode, dataset, history, historyDate, tra
         
   
     
-    variables = {'fig': fig,
-           'rmseGlobal': rmseGlobal,
+    variables = {'rmseGlobal': rmseGlobal,
            'rmseModel': rmseModel,
            'rmseNew': rmseNew,
            'newCode': newCode,
-           'dataset': dataset,
-           'history': history,
+           'dataset': dataset.to_dict(),
+           'history': history.to_dict(),
            'historyDate': historyDate,
-           'train': train,
+           'train': train.to_dict(),
            'target': target,
            'realTarget': realTarget,
            'predTarget': predTarget,
@@ -49,11 +48,11 @@ def updates(globalPred, globalReal, prevCode, dataset, history, historyDate, tra
            'lookback': lookback,
            'lookbackData': lookbackData,
            'epochs': epochs,
-           'dates': dates,
+           'dates': dates.strftime('%Y-%m-%d'),
            'longpredTarget': longpredTarget,
            'longmodel': longmodel,
            'longscaler': longscaler,
-           'trainv2': trainv2,
+           'trainv2': trainv2.to_dict(),
            'targetv2': targetv2,
            'realTargetv2': realTargetv2,
            'predTargetv2': predTargetv2,
@@ -65,30 +64,12 @@ def updates(globalPred, globalReal, prevCode, dataset, history, historyDate, tra
            'globalPred': globalPred,
            'globalReal': globalReal,
            'longpredTargetFin': longpredTargetFin,
-           'final': final,
-           "code": None,
-            "changeModel": None,
-            "longPredInput": None,
-            "changelongPredMod": None,
-            "cancelModel": None,
-            "cancelLong": None,
-            "newLookback": None,
-            "newEpoch": None,
-            "newNeuron": None,
-            "newLoss": None,
-            "newOptimizer": None,
-            "newLongLookback": None,
-            "newLongEpoch": None,
-            "newLongNeuron": None,
-            "newLongLoss": None,
-            "newLongOptimizer": None,
-            "numDays": None,
-            "count":0}
+           'final': final.to_dict()}
 
     variables = json.dumps(variables)
 
 
-    return variables
+    return fig, variables
 
 
 

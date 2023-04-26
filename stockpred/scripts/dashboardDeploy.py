@@ -1,6 +1,7 @@
 
 
 import stockpred.scripts.modelPred as mp
+import pandas as pd
 from datetime import timedelta
 from datetime import date
 import json
@@ -37,13 +38,13 @@ def updates(globalPred, globalReal, prevCode, dataset, history, historyDate, tra
            'rmseNew': rmseNew,
            'prevCode': newCode,
            'dataset': dataset.to_dict(),
-           'history': history.to_dict(),
+           'history': history,
            'historyDate': [date.strftime('%Y-%m-%d') for date in historyDate],
-           'train': train.to_dict(),
+           'train': train,
            'target': target,
            'realTarget': realTarget,
            'predTarget': predTarget,
-           'model': model,
+           'model': model.to_json(),
            'scaler': scaler,
            'lookback': lookback,
            'lookbackData': lookbackData,
@@ -52,7 +53,7 @@ def updates(globalPred, globalReal, prevCode, dataset, history, historyDate, tra
            'longpredTarget': longpredTarget,
            'longmodel': longmodel,
            'longscaler': longscaler,
-           'trainv2': trainv2.to_dict(),
+           'trainv2': trainv2,
            'targetv2': targetv2,
            'realTargetv2': realTargetv2,
            'predTargetv2': predTargetv2,

@@ -2,6 +2,8 @@ from flask import Flask, request, render_template, url_for, flash, session, redi
 from stockpred import app
 from sqlalchemy.orm import Session
 import pandas as pd
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler
 import json
 import stockpred.scripts.dashboard as dash
 import stockpred.scripts.dashboardDeploy as dashdep
@@ -236,6 +238,12 @@ class CustomEncoder(json.JSONEncoder):
             return obj.isoformat()
         elif isinstance(obj, pd.Timestamp):
             return obj.isoformat()
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist() 
+        elif isinstance(obj, np.float32):
+            return float(obj)
+        elif isinstance(obj, MinMaxScaler):
+            return {'scale_min': obj.data_min_.tolist(), 'scale_max': obj.data_max_.tolist()}
         else:
             return super().default(obj)
         
@@ -246,9 +254,9 @@ def my_function():
             variables = json.loads(job.variables)
             variables['count'] += 1
             if variables['count']>0:
-                dfig, newVariable = dashdep.updates(variables['globalPred'], variables['globalReal'], variables['prevCode'], pd.DataFrame.from_dict(variables['dataset']), pd.DataFrame.from_dict(variables['history']), [datetime.date(datetime.strptime(date, '%Y-%m-%d')) for date in variables['historyDate']], pd.DataFrame.from_dict(variables['train']), variables['target'], variables['realTarget'],\
+                dfig, newVariable = dashdep.updates(variables['globalPred'], variables['globalReal'], variables['prevCode'], pd.DataFrame.from_dict(variables['dataset']), variables['history'], [datetime.date(datetime.strptime(date, '%Y-%m-%d')) for date in variables['historyDate']], variables['train'], variables['target'], variables['realTarget'],\
                 variables['predTarget'], variables['model'], variables['scaler'], variables['lookback'], variables['lookbackData'], variables['epochs'], [datetime.date(datetime.strptime(date, '%Y-%m-%d')) for date in variables['dates']], variables['longpredTarget'],\
-                variables['longmodel'],variables['longscaler'],pd.DataFrame.from_dict(variables['trainv2']),variables['targetv2'],variables['realTargetv2'],variables['predTargetv2'],\
+                variables['longmodel'],variables['longscaler'],variables['trainv2'],variables['targetv2'],variables['realTargetv2'],variables['predTargetv2'],\
             variables['modelv2'],variables['scalerv2'],variables['lookbackDatav2'],variables['lookbackv2'], variables['epochsv2'], variables['longpredTargetFin'],\
                 variables['code'], variables['changeModel'], variables['longPredInput'],\
                         variables['changelongPredMod'], variables['cancelModel'], variables['cancelLong'], variables['newLookback'], variables['newEpoch'], variables['newNeuron'], variables['newLoss'], variables['newOptimizer'],\
@@ -258,7 +266,7 @@ def my_function():
                 variables['rmseGlobal'] = newVariable['rmseGlobal']
                 variables['rmseModel'] = newVariable['rmseModel']
                 variables['rmseNew'] = newVariable['rmseNew']
-                variables['prevCode'] = newVariable['newCode']
+                variables['prevCode'] = newVariable['prevCode']
                 variables['dataset'] = newVariable['dataset']
                 variables['history'] = newVariable['history']
                 variables['historyDate'] = newVariable['historyDate']
@@ -285,7 +293,7 @@ def my_function():
                 variables['lookbackDatav2'] = newVariable['lookbackDatav2']
                 variables['epochsv2'] = newVariable['epochsv2']
                 variables['globalPred'] = newVariable['globalPred']
-                variables['globalReal'] = newVariable['glovalReal']
+                variables['globalReal'] = newVariable['globalReal']
                 variables['longpredTargetFin'] = newVariable['longpredTargetFin']
 
                 #Create graphJSON

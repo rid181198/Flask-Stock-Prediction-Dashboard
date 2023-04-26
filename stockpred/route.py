@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, url_for, flash, session, redirect, make_response
 from stockpred import app
+from sqlalchemy.orm import Session
 import pandas as pd
 import json
 import stockpred.scripts.dashboard as dash
@@ -229,59 +230,76 @@ def logout_page():
 #        job.variables['newLoss'],job.variables['newOptimizer'],job.variables['newLongLookback'],job.variables['newLongEpoch'],job.variables['newLongNeuron'],\
 #        job.variables['newLongLoss'],job.variables['newLongOptimizer'],job.variables['numDays']
 
-
-def my_function(variables, job):
-   
-    if variables['count']>0:
-        dfig, newVariable = dashdep.updates(variables['globalPred'], variables['globalReal'], variables['prevCode'], pd.DataFrame.from_dict(variables['dataset']), pd.DataFrame.from_dict(variables['history']), variables['historyDate'], pd.DataFrame.from_dict(variables['train']), variables['target'], variables['realTarget'],\
-        variables['predTarget'], variables['model'], variables['scaler'], variables['lookback'], variables['lookbackData'], variables['epochs'], datetime.date(datetime.strptime(variables['dates'], '%Y-%m-%d')), variables['longpredTarget'],\
-        variables['longmodel'],variables['longscaler'],pd.DataFrame.from_dict(variables['trainv2']),variables['targetv2'],variables['realTargetv2'],variables['predTargetv2'],\
-    variables['modelv2'],variables['scalerv2'],variables['lookbackDatav2'],variables['lookbackv2'], variables['epochsv2'], variables['longpredTargetFin'],\
-        variables['code'], variables['changeModel'], variables['longPredInput'],\
-                variables['changelongPredMod'], variables['cancelModel'], variables['cancelLong'], variables['newLookback'], variables['newEpoch'], variables['newNeuron'], variables['newLoss'], variables['newOptimizer'],\
-                    variables['newLongLookback'], variables['newLongEpoch'], variables['newLongNeuron'], variables['newLongLoss'], variables['newLongOptimizer'], variables['numDays'])
+class CustomEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        elif isinstance(obj, pd.Timestamp):
+            return obj.isoformat()
+        else:
+            return super().default(obj)
         
-    #variables['fig'] = newVariable['fig']
-    variables['rmseGlobal'] = newVariable['rmseGlobal']
-    variables['rmseModel'] = newVariable['rmseModel']
-    variables['rmseNew'] = newVariable['rmseNew']
-    variables['newCode'] = newVariable['newCode']
-    variables['dataset'] = newVariable['dataset']
-    variables['history'] = newVariable['history']
-    variables['historyDate'] = newVariable['historyDate']
-    variables['train'] = newVariable['train']
-    variables['target'] = newVariable['target']
-    variables['realTarget'] = newVariable['realTarget']
-    variables['predTarget'] = newVariable['predTarget']
-    variables['model'] = newVariable['model']
-    variables['scaler'] = newVariable['scaler']
-    variables['lookback'] = newVariable['lookback']
-    variables['lookbackData'] = newVariable['lookbackData']
-    variables['epochs'] = newVariable['epochs']
-    variables['dates'] = newVariable['dates']
-    variables['longpredTarget'] = newVariable['longpredTarget']
-    variables['longmodel'] = newVariable['longmodel']
-    variables['longscaler'] = newVariable['longscaler']
-    variables['trainv2'] = newVariable['trainv2']
-    variables['targetv2'] = newVariable['targetv2']
-    variables['realTargetv2'] = newVariable['realTargetv2']
-    variables['predTargetv2'] = newVariable['predTargetv2']
-    variables['modelv2'] = newVariable['modelv2']
-    variables['scalerv2'] = newVariable['scalerv2']
-    variables['lookbackv2'] = newVariable['lookbackv2']
-    variables['lookbackDatav2'] = newVariable['lookbackDatav2']
-    variables['epochsv2'] = newVariable['epochsv2']
-    variables['globalPred'] = newVariable['globalPred']
-    variables['globalReal'] = newVariable['glovalReal']
-    variables['longpredTargetFin'] = newVariable['longpredTargetFin']
+def my_function():
+    with app.app_context():
+        jobs = db.session.query(Userdata).all()
+        for job in jobs:
+            variables = json.loads(job.variables)
+            variables['count'] += 1
+            if variables['count']>0:
+                dfig, newVariable = dashdep.updates(variables['globalPred'], variables['globalReal'], variables['prevCode'], pd.DataFrame.from_dict(variables['dataset']), pd.DataFrame.from_dict(variables['history']), [datetime.date(datetime.strptime(date, '%Y-%m-%d')) for date in variables['historyDate']], pd.DataFrame.from_dict(variables['train']), variables['target'], variables['realTarget'],\
+                variables['predTarget'], variables['model'], variables['scaler'], variables['lookback'], variables['lookbackData'], variables['epochs'], [datetime.date(datetime.strptime(date, '%Y-%m-%d')) for date in variables['dates']], variables['longpredTarget'],\
+                variables['longmodel'],variables['longscaler'],pd.DataFrame.from_dict(variables['trainv2']),variables['targetv2'],variables['realTargetv2'],variables['predTargetv2'],\
+            variables['modelv2'],variables['scalerv2'],variables['lookbackDatav2'],variables['lookbackv2'], variables['epochsv2'], variables['longpredTargetFin'],\
+                variables['code'], variables['changeModel'], variables['longPredInput'],\
+                        variables['changelongPredMod'], variables['cancelModel'], variables['cancelLong'], variables['newLookback'], variables['newEpoch'], variables['newNeuron'], variables['newLoss'], variables['newOptimizer'],\
+                            variables['newLongLookback'], variables['newLongEpoch'], variables['newLongNeuron'], variables['newLongLoss'], variables['newLongOptimizer'], variables['numDays'])
+                
+                #variables['fig'] = newVariable['fig']
+                variables['rmseGlobal'] = newVariable['rmseGlobal']
+                variables['rmseModel'] = newVariable['rmseModel']
+                variables['rmseNew'] = newVariable['rmseNew']
+                variables['prevCode'] = newVariable['newCode']
+                variables['dataset'] = newVariable['dataset']
+                variables['history'] = newVariable['history']
+                variables['historyDate'] = newVariable['historyDate']
+                variables['train'] = newVariable['train']
+                variables['target'] = newVariable['target']
+                variables['realTarget'] = newVariable['realTarget']
+                variables['predTarget'] = newVariable['predTarget']
+                variables['model'] = newVariable['model']
+                variables['scaler'] = newVariable['scaler']
+                variables['lookback'] = newVariable['lookback']
+                variables['lookbackData'] = newVariable['lookbackData']
+                variables['epochs'] = newVariable['epochs']
+                variables['dates'] = newVariable['dates']
+                variables['longpredTarget'] = newVariable['longpredTarget']
+                variables['longmodel'] = newVariable['longmodel']
+                variables['longscaler'] = newVariable['longscaler']
+                variables['trainv2'] = newVariable['trainv2']
+                variables['targetv2'] = newVariable['targetv2']
+                variables['realTargetv2'] = newVariable['realTargetv2']
+                variables['predTargetv2'] = newVariable['predTargetv2']
+                variables['modelv2'] = newVariable['modelv2']
+                variables['scalerv2'] = newVariable['scalerv2']
+                variables['lookbackv2'] = newVariable['lookbackv2']
+                variables['lookbackDatav2'] = newVariable['lookbackDatav2']
+                variables['epochsv2'] = newVariable['epochsv2']
+                variables['globalPred'] = newVariable['globalPred']
+                variables['globalReal'] = newVariable['glovalReal']
+                variables['longpredTargetFin'] = newVariable['longpredTargetFin']
 
-    #Create graphJSON
-    dgraphJSON = json.dumps(dfig, cls=plotly.utils.PlotlyJSONEncoder)
-    derrorsDict = {'globalerror': variables['rmseGlobal'], 'modelerror': variables['rmseModel'], 'newerror': variables['rmseNew'], 'final': variables['final']}
-    variables['count'] += 1
+                #Create graphJSON
+                dgraphJSON = json.dumps(dfig, cls=plotly.utils.PlotlyJSONEncoder)
+                derrorsDict = {'globalerror': variables['rmseGlobal'], 'modelerror': variables['rmseModel'], 'newerror': variables['rmseNew'], 'final': variables['final']}
+                
 
-    job.variables = variables
-    job.json_data = dgraphJSON
+                variables = json.dumps(variables, cls=CustomEncoder)
+                job.variables = variables
+                job.json_data = dgraphJSON
+
+                
+                db.session.commit()
+
 
 scheduler = BackgroundScheduler()
 scheduler.start()
@@ -300,20 +318,20 @@ def deploy_page():
         variables = {'rmseGlobal': globalerror,
            'rmseModel': modelerror,
            'rmseNew': newerror,
-           'newCode': '',
+           'prevCode': '',
            'dataset': None,
            'history': None,
-           'historyDate': None,
+           'historyDate': ['2000-01-01','2000-01-02'],
            'train': None,
            'target': None,
-           'realTarget': None,
-           'predTarget': None,
+           'realTarget': [0],
+           'predTarget': [0],
            'model': None,
            'scaler': None,
            'lookback':None,
            'lookbackData': None,
            'epochs': None,
-           'dates': None,
+           'dates': ['2000-01-01','2000-01-02'],
            'longpredTarget': None,
            'longmodel': None,
            'longscaler': None,
@@ -326,8 +344,8 @@ def deploy_page():
            'lookbackDatav2': None,
            'lookbackv2': None,
            'epochsv2': None,
-           'globalPred': None,
-           'globalReal': None,
+           'globalPred': [0],
+           'globalReal': [0],
            'longpredTargetFin': None,
            'final': final.to_dict(),
            "code": code,
@@ -349,13 +367,14 @@ def deploy_page():
             "numDays": numDays,
             "count":0}
 
-        variables = json.dumps(variables)
+        variables = json.dumps(variables, cls=CustomEncoder)
         json_data = graphJSON
         job = Userdata(job_id = job_id, variables = variables, json_data=json_data, owner = current_user.id)
+        
         db.session.add(job)
         db.session.commit()
 
-        scheduler.add_job(func = my_function, trigger='interval', seconds=60, id=job_id, args=[variables, job])
+        scheduler.add_job(func = my_function, trigger='interval', seconds=60, id=job_id)
         return redirect(url_for('deploy_page'))
     session['job_id'] = job_id
 
@@ -372,4 +391,4 @@ def deploy_page():
                 db.session.commit()
                 print("stopped!")
     
-    return render_template('deployment.html', form=form, dgraphJSON=dgraphJSON, derrorsDict = derrorsDict)
+    return render_template('deployment.html', form=form, dgraphJSON=job.json_data, derrorsDict = {'globalerror': 0, 'modelerror': 0, 'newerror': 0, 'final': pd.DataFrame()})

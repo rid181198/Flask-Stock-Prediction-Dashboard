@@ -35,10 +35,10 @@ def updates(globalPred, globalReal, prevCode, dataset, history, historyDate, tra
     variables = {'rmseGlobal': rmseGlobal,
            'rmseModel': rmseModel,
            'rmseNew': rmseNew,
-           'newCode': newCode,
+           'prevCode': newCode,
            'dataset': dataset.to_dict(),
            'history': history.to_dict(),
-           'historyDate': historyDate,
+           'historyDate': [date.strftime('%Y-%m-%d') for date in historyDate],
            'train': train.to_dict(),
            'target': target,
            'realTarget': realTarget,
@@ -48,7 +48,7 @@ def updates(globalPred, globalReal, prevCode, dataset, history, historyDate, tra
            'lookback': lookback,
            'lookbackData': lookbackData,
            'epochs': epochs,
-           'dates': dates.strftime('%Y-%m-%d'),
+           'dates': [date.strftime('%Y-%m-%d') for date in dates],
            'longpredTarget': longpredTarget,
            'longmodel': longmodel,
            'longscaler': longscaler,
@@ -66,8 +66,7 @@ def updates(globalPred, globalReal, prevCode, dataset, history, historyDate, tra
            'longpredTargetFin': longpredTargetFin,
            'final': final.to_dict()}
 
-    variables = json.dumps(variables)
-
+    
 
     return fig, variables
 

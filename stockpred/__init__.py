@@ -5,6 +5,7 @@ from flask_bcrypt import Bcrypt
 
 app=Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///stocks.db'
+app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = '2b8c674fd1815cb4c61fb207'
 app.add_url_rule('/source/<filename>', endpoint='source', view_func=app.send_static_file)
 db=SQLAlchemy(app)

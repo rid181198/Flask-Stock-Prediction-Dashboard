@@ -31,25 +31,25 @@ def updates(globalPred, globalReal, prevCode, dataset, history, historyDate, tra
         newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
             newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays)
         
-  
+#[date.strftime('%Y-%m-%d') for date in historyDate]  
     
     variables = {'rmseGlobal': rmseGlobal,
            'rmseModel': rmseModel,
            'rmseNew': rmseNew,
            'prevCode': newCode,
-           'dataset': dataset.to_dict(),
+           'dataset': dataset,
            'history': history,
-           'historyDate': [date.strftime('%Y-%m-%d') for date in historyDate],
+           'historyDate': historyDate,
            'train': train,
            'target': target,
            'realTarget': realTarget,
            'predTarget': predTarget,
-           'model': model.to_json(),
+           'model': model,
            'scaler': scaler,
            'lookback': lookback,
            'lookbackData': lookbackData,
            'epochs': epochs,
-           'dates': [date.strftime('%Y-%m-%d') for date in dates],
+           'dates': dates,
            'longpredTarget': longpredTarget,
            'longmodel': longmodel,
            'longscaler': longscaler,
@@ -65,7 +65,7 @@ def updates(globalPred, globalReal, prevCode, dataset, history, historyDate, tra
            'globalPred': globalPred,
            'globalReal': globalReal,
            'longpredTargetFin': longpredTargetFin,
-           'final': final.to_dict()}
+           'final': final}
 
     
 

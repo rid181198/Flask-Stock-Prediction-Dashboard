@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
+from keras.models import Sequential
 import json
 import stockpred.scripts.dashboard as dash
 import stockpred.scripts.dashboardDeploy as dashdep
@@ -244,18 +245,46 @@ class CustomEncoder(json.JSONEncoder):
             return float(obj)
         elif isinstance(obj, MinMaxScaler):
             return {'scale_min': obj.data_min_.tolist(), 'scale_max': obj.data_max_.tolist()}
+        elif isinstance(obj, pd.DataFrame):
+            return obj.to_dict()
+        elif isinstance(obj, Sequential):
+            return obj.to_json()
         else:
             return super().default(obj)
         
+class CustomDecoder(json.JSONDecoder):
+    def __init__(self, *args, **kwargs):
+        super().__init__(object_hook=self.object_hook, *args, **kwargs)
+        
+    def object_hook(self, obj_dict):
+        if '__class__' in obj_dict:
+            class_name = obj_dict['__class__']
+            if class_name == 'DataFrame':
+                return pd.read_json(obj_dict['__value__'])
+            elif class_name == 'Sequential':
+                return Sequential.from_config(json.loads(obj_dict['__value__']))
+        elif 'scale_min' in obj_dict and 'scale_max' in obj_dict:
+            return MinMaxScaler(feature_range=(0, 1), copy=False).fit([obj_dict['scale_min'], obj_dict['scale_max']])
+        elif 'dtype' in obj_dict:
+            return np.array(obj_dict['data'], dtype=obj_dict['dtype'])
+        elif 'datetime' in obj_dict:
+            return datetime.datetime.strptime(obj_dict, '%Y-%m-%d')
+        elif 'timestamp' in obj_dict:
+            return pd.Timestamp(obj_dict['timestamp'])
+        else:
+            return obj_dict
+        
+
 def my_function():
     with app.app_context():
         jobs = db.session.query(Userdata).all()
         for job in jobs:
-            variables = json.loads(job.variables)
+            variables = json.loads(job.variables,cls=CustomDecoder)
             variables['count'] += 1
             if variables['count']>0:
-                dfig, newVariable = dashdep.updates(variables['globalPred'], variables['globalReal'], variables['prevCode'], pd.DataFrame.from_dict(variables['dataset']), variables['history'], [datetime.date(datetime.strptime(date, '%Y-%m-%d')) for date in variables['historyDate']], variables['train'], variables['target'], variables['realTarget'],\
-                variables['predTarget'], variables['model'], variables['scaler'], variables['lookback'], variables['lookbackData'], variables['epochs'], [datetime.date(datetime.strptime(date, '%Y-%m-%d')) for date in variables['dates']], variables['longpredTarget'],\
+                print(variables['historyDate'])
+                dfig, newVariable = dashdep.updates(variables['globalPred'], variables['globalReal'], variables['prevCode'], variables['dataset'], variables['history'], [datetime.fromisoformat(date) for date in variables['historyDate']], variables['train'], variables['target'], variables['realTarget'],\
+                variables['predTarget'], variables['model'], variables['scaler'], variables['lookback'], variables['lookbackData'], variables['epochs'],[datetime.fromisoformat(date) for date in variables['dates']], variables['longpredTarget'],\
                 variables['longmodel'],variables['longscaler'],variables['trainv2'],variables['targetv2'],variables['realTargetv2'],variables['predTargetv2'],\
             variables['modelv2'],variables['scalerv2'],variables['lookbackDatav2'],variables['lookbackv2'], variables['epochsv2'], variables['longpredTargetFin'],\
                 variables['code'], variables['changeModel'], variables['longPredInput'],\
@@ -329,7 +358,7 @@ def deploy_page():
            'prevCode': '',
            'dataset': None,
            'history': None,
-           'historyDate': ['2000-01-01','2000-01-02'],
+           'historyDate': [datetime.strptime('2000-01-01','%Y-%m-%d'),datetime.strptime('2000-01-02','%Y-%m-%d')],
            'train': None,
            'target': None,
            'realTarget': [0],
@@ -339,7 +368,7 @@ def deploy_page():
            'lookback':None,
            'lookbackData': None,
            'epochs': None,
-           'dates': ['2000-01-01','2000-01-02'],
+           'dates': [datetime.strptime('2000-01-01','%Y-%m-%d'),datetime.strptime('2000-01-02','%Y-%m-%d')],
            'longpredTarget': None,
            'longmodel': None,
            'longscaler': None,
@@ -382,7 +411,7 @@ def deploy_page():
         db.session.add(job)
         db.session.commit()
 
-        scheduler.add_job(func = my_function, trigger='interval', seconds=60, id=job_id)
+        scheduler.add_job(func = my_function, trigger='interval', seconds=30, id=job_id)
         return redirect(url_for('deploy_page'))
     session['job_id'] = job_id
 

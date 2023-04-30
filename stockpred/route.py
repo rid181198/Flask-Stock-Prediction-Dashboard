@@ -260,7 +260,10 @@ class CustomDecoder(json.JSONDecoder):
         if '__class__' in obj_dict:
             class_name = obj_dict['__class__']
             if class_name == 'DataFrame':
-                return pd.read_json(obj_dict['__value__'])
+                df = pd.read_json(obj_dict['__value__'])
+                if 'Date' in df.columns:
+                    df['Date'] = pd.to_datetime(df['Date'])
+                return df
             elif class_name == 'Sequential':
                 return Sequential.from_config(json.loads(obj_dict['__value__']))
         elif 'scale_min' in obj_dict and 'scale_max' in obj_dict:
@@ -282,9 +285,9 @@ def my_function():
             variables = json.loads(job.variables,cls=CustomDecoder)
             variables['count'] += 1
             if variables['count']>0:
-                print(variables['historyDate'])
-                dfig, newVariable = dashdep.updates(variables['globalPred'], variables['globalReal'], variables['prevCode'], variables['dataset'], variables['history'], [datetime.fromisoformat(date) for date in variables['historyDate']], variables['train'], variables['target'], variables['realTarget'],\
-                variables['predTarget'], variables['model'], variables['scaler'], variables['lookback'], variables['lookbackData'], variables['epochs'],[datetime.fromisoformat(date) for date in variables['dates']], variables['longpredTarget'],\
+                #print(variables['historyDate'])
+                dfig, newVariable = dashdep.updates(variables['globalPred'], variables['globalReal'], variables['prevCode'], variables['dataset'], variables['history'], variables['historyDate'], variables['train'], variables['target'], variables['realTarget'],\
+                variables['predTarget'], variables['model'], variables['scaler'], variables['lookback'], variables['lookbackData'], variables['epochs'],variables['dates'], variables['longpredTarget'],\
                 variables['longmodel'],variables['longscaler'],variables['trainv2'],variables['targetv2'],variables['realTargetv2'],variables['predTargetv2'],\
             variables['modelv2'],variables['scalerv2'],variables['lookbackDatav2'],variables['lookbackv2'], variables['epochsv2'], variables['longpredTargetFin'],\
                 variables['code'], variables['changeModel'], variables['longPredInput'],\

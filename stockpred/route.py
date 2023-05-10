@@ -20,7 +20,7 @@ import uuid
 import json
 from datetime import datetime
 import time
-import io
+from io import StringIO
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
@@ -246,7 +246,7 @@ class CustomEncoder(json.JSONEncoder):
         elif isinstance(obj, MinMaxScaler):
             return {'scale_min': obj.data_min_.tolist(), 'scale_max': obj.data_max_.tolist()}
         elif isinstance(obj, pd.DataFrame):
-            return obj.to_dict()
+            return obj.to_csv(index=False)
         elif isinstance(obj, Sequential):
             return obj.to_json()
         else:
@@ -260,11 +260,13 @@ class CustomDecoder(json.JSONDecoder):
         if '__class__' in obj_dict:
             class_name = obj_dict['__class__']
             if class_name == 'DataFrame':
+                print('yes it is dataframe')
                 df = pd.read_json(obj_dict['__value__'])
                 if 'Date' in df.columns:
                     df['Date'] = pd.to_datetime(df['Date'])
                 return df
             elif class_name == 'Sequential':
+                print('yes it is sequential')
                 return Sequential.from_config(json.loads(obj_dict['__value__']))
         elif 'scale_min' in obj_dict and 'scale_max' in obj_dict:
             return MinMaxScaler(feature_range=(0, 1), copy=False).fit([obj_dict['scale_min'], obj_dict['scale_max']])
@@ -276,7 +278,7 @@ class CustomDecoder(json.JSONDecoder):
             return pd.Timestamp(obj_dict['timestamp'])
         else:
             return obj_dict
-        
+      
 
 def my_function():
     with app.app_context():
@@ -286,7 +288,7 @@ def my_function():
             variables['count'] += 1
             if variables['count']>0:
                 #print(variables['historyDate'])
-                dfig, newVariable = dashdep.updates(variables['globalPred'], variables['globalReal'], variables['prevCode'], variables['dataset'], variables['history'], variables['historyDate'], variables['train'], variables['target'], variables['realTarget'],\
+                dfig, newVariable = dashdep.updates(variables['globalPred'], variables['globalReal'], variables['prevCode'], pd.read_csv(StringIO(variables['dataset'])), variables['history'], variables['historyDate'], variables['train'], variables['target'], variables['realTarget'],\
                 variables['predTarget'], variables['model'], variables['scaler'], variables['lookback'], variables['lookbackData'], variables['epochs'],variables['dates'], variables['longpredTarget'],\
                 variables['longmodel'],variables['longscaler'],variables['trainv2'],variables['targetv2'],variables['realTargetv2'],variables['predTargetv2'],\
             variables['modelv2'],variables['scalerv2'],variables['lookbackDatav2'],variables['lookbackv2'], variables['epochsv2'], variables['longpredTargetFin'],\
@@ -359,7 +361,7 @@ def deploy_page():
            'rmseModel': modelerror,
            'rmseNew': newerror,
            'prevCode': '',
-           'dataset': None,
+           'dataset': pd.DataFrame({'A': [1, 2, 3], 'B': [4, 5, 6]}).to_csv(index=False),
            'history': None,
            'historyDate': [datetime.strptime('2000-01-01','%Y-%m-%d'),datetime.strptime('2000-01-02','%Y-%m-%d')],
            'train': None,

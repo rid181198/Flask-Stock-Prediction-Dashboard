@@ -18,7 +18,7 @@ class preProcessing():
         
       
     #loading the data
-    def dataLoading(self, startDate='2023-04-26'):
+    def dataLoading(self, startDate='2023-05-07'):
         #filtering the target variable
         
     
@@ -26,6 +26,8 @@ class preProcessing():
         booleanCond=[]
         
         for i in self.dataset['Date']:
+            if isinstance(i, str):
+                i = datetime.strptime(i, '%Y-%m-%d')
             i=datetime.date(i)
             if i<=datetime.date(datetime.strptime(startDate, '%Y-%m-%d')):
                 booleanCond.append(True)

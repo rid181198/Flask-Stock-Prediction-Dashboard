@@ -4,10 +4,6 @@
 {% endblock %}
 {% block content %}
 
-<form method="POST">
-    {{ form.hidden_tag() }}
-    {{ form.stop(class='btn btn-md-md btn-outline-dark btn-light me-5',style="font-size:1.5rem", onclick="startLoading()") }}
-</form>
 
 <div class="d-flex flex-column">
     <div class="d-grid">
@@ -29,6 +25,11 @@
         <div class="container mb-2 p-2 border border-dark font-weight-bolder text-center shadow" id="errors" style="font-size:1.5rem">
         Your model's current RMSE : <strong>{{ derrorsDict['newerror'] }}</strong>
         </div>
+
+          <form method="POST" class="container mb-2 p-2 border border-dark font-weight-bolder text-center shadow" id="errors" style="font-size:1.5rem">
+            {{ form.hidden_tag() }}
+            {{ form.stop(class='btn btn-md-md btn-outline-dark btn-light me-5',style="font-size:1.5rem", onclick="startLoading()") }}
+          </form>
     </div>
 </div>
 

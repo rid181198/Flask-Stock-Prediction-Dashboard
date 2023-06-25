@@ -329,6 +329,7 @@ def my_function():
                 variables['globalPred'] = newVariable['globalPred']
                 variables['globalReal'] = newVariable['globalReal']
                 variables['longpredTargetFin'] = newVariable['longpredTargetFin']
+                variables['final'] = newVariable['final']
 
                 #Create graphJSON
                 dgraphJSON = json.dumps(dfig, cls=plotly.utils.PlotlyJSONEncoder)
@@ -390,7 +391,7 @@ def deploy_page():
            'globalPred': [0],
            'globalReal': [0],
            'longpredTargetFin': None,
-           'final': final.to_dict(),
+           'final': final,
            "code": code,
             "changeModel": changeModel,
             "longPredInput": longPredInput,
@@ -434,14 +435,16 @@ def deploy_page():
                 db.session.commit()
                 print("stopped!")
 
-            if form5.validate_on_submit():
-                if form5.download.data:
-                    job_id = session.get('job_id')
-                    job = Userdata.query.filter_by(job_id=job_id).first()
-                    finaldep = job.variables['final']
-                    response = make_response(finaldep.to_csv(index=False))
-                    response.headers.set('Content-Disposition', 'attachment', filename='final.csv')
-                    response.headers.set('Content-Type', 'text/csv')
-                    return response
+        if form5.validate_on_submit():
+            if form5.download.data:
+                job_id = session.get('job_id')
+                job = Userdata.query.filter_by(job_id=job_id).first()
+                variables = json.loads(job.variables,cls=CustomDecoder)
+                finaldep = variables['final']
+                print(finaldep)
+                response = make_response(finaldep.to_csv(index=False))
+                response.headers.set('Content-Disposition', 'attachment', filename='final.csv')
+                response.headers.set('Content-Type', 'text/csv')
+                return response
     
     return render_template('deployment.html', form=form, form5 = form5, dgraphJSON=job.json_data, derrorsDict = {'globalerror': 0, 'modelerror': 0, 'newerror': 0, 'final': pd.DataFrame()})

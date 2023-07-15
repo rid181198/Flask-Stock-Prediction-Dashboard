@@ -350,105 +350,113 @@ scheduler.start()
 @app.route('/deployment',methods=['GET','POST'])
 @login_required
 def deploy_page():
-    form = StopDeploy()
-    form5 = DownloadForm()
-    job = Userdata.query.filter_by(owner = current_user.id).first()
-    if job:
-        job_id = job.job_id
-        json_data = job.json_data
-        variables = job.variables
-        scheduler.resume_job(job_id)
-    else:
-        job_id = str(uuid.uuid4()) + '_model'
-        variables = {'rmseGlobal': globalerror,
-           'rmseModel': modelerror,
-           'rmseNew': newerror,
-           'prevCode': '',
-           'dataset': pd.DataFrame({'A': [1, 2, 3], 'B': [4, 5, 6]}).to_csv(index=False),
-           'history': None,
-           'historyDate': [datetime.strptime('2000-01-01','%Y-%m-%d'),datetime.strptime('2000-01-02','%Y-%m-%d')],
-           'train': None,
-           'target': None,
-           'realTarget': [0],
-           'predTarget': [0],
-           'model': None,
-           'scaler': None,
-           'lookback':None,
-           'lookbackData': None,
-           'epochs': None,
-           'dates': [datetime.strptime('2000-01-01','%Y-%m-%d'),datetime.strptime('2000-01-02','%Y-%m-%d')],
-           'longpredTarget': None,
-           'longmodel': None,
-           'longscaler': None,
-           'trainv2':None,
-           'targetv2': None,
-           'realTargetv2': None,
-           'predTargetv2': None,
-           'modelv2': None,
-           'scalerv2': None,
-           'lookbackDatav2': None,
-           'lookbackv2': None,
-           'epochsv2': None,
-           'globalPred': [0],
-           'globalReal': [0],
-           'longpredTargetFin': None,
-           'final': final,
-           "code": code,
-            "changeModel": changeModel,
-            "longPredInput": longPredInput,
-            "changelongPredMod": changelongPredMod,
-            "cancelModel": cancelModel,
-            "cancelLong": cancelLong,
-            "newLookback": newLookback,
-            "newEpoch": newEpoch,
-            "newNeuron": newNeuron,
-            "newLoss": newLoss,
-            "newOptimizer": newOptimizer,
-            "newLongLookback": newLongLookback,
-            "newLongEpoch": newLongEpoch,
-            "newLongNeuron": newLongNeuron,
-            "newLongLoss": newLongLoss,
-            "newLongOptimizer": newLongOptimizer,
-            "numDays": numDays,
-            "count":0}
-
-        variables = json.dumps(variables, cls=CustomEncoder)
-        json_data = graphJSON
-        job = Userdata(job_id = job_id, variables = variables, json_data=json_data, owner = current_user.id)
-        
-        db.session.add(job)
-        db.session.commit()
-
-        scheduler.add_job(func = my_function, trigger='interval', seconds=30, id=job_id)
-        return redirect(url_for('deploy_page'))
-    session['job_id'] = job_id
-
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            if form.stop.data:
-                job_id = session.get('job_id')
-                try:
-                    scheduler.remove_job(job_id)
-                except:
-                    pass
-                job = Userdata.query.filter_by(job_id=job_id).first()
-                db.session.delete(job)
-                db.session.commit()
-                print("stopped!")
-
-        if form5.validate_on_submit():
-            if form5.download.data:
-                job_id = session.get('job_id')
-                job = Userdata.query.filter_by(job_id=job_id).first()
-                variables = json.loads(job.variables,cls=CustomDecoder)
-                finaldep = variables['final']
-        
-                csv_data = io.StringIO()
-                csv_data.write(finaldep)
-                
-                response = make_response(csv_data.getvalue())
-                response.headers.set('Content-Disposition', 'attachment', filename='final.csv')
-                response.headers.set('Content-Type', 'text/csv')
-                return response
     
-    return render_template('deployment.html', form=form, form5 = form5, dgraphJSON=job.json_data, derrorsDict = {'globalerror': 0, 'modelerror': 0, 'newerror': 0, 'final': pd.DataFrame()})
+    userdata = User.query.filter_by(id = current_user.id).first()
+    if userdata.deploy_status:
+
+        form = StopDeploy()
+        form5 = DownloadForm()
+        job = Userdata.query.filter_by(owner = current_user.id).first()
+        if job:
+            job_id = job.job_id
+            json_data = job.json_data
+            variables = job.variables
+            scheduler.resume_job(job_id)
+        else:
+            job_id = str(uuid.uuid4()) + '_model'
+            variables = {'rmseGlobal': globalerror,
+            'rmseModel': modelerror,
+            'rmseNew': newerror,
+            'prevCode': '',
+            'dataset': pd.DataFrame({'A': [1, 2, 3], 'B': [4, 5, 6]}).to_csv(index=False),
+            'history': None,
+            'historyDate': [datetime.strptime('2000-01-01','%Y-%m-%d'),datetime.strptime('2000-01-02','%Y-%m-%d')],
+            'train': None,
+            'target': None,
+            'realTarget': [0],
+            'predTarget': [0],
+            'model': None,
+            'scaler': None,
+            'lookback':None,
+            'lookbackData': None,
+            'epochs': None,
+            'dates': [datetime.strptime('2000-01-01','%Y-%m-%d'),datetime.strptime('2000-01-02','%Y-%m-%d')],
+            'longpredTarget': None,
+            'longmodel': None,
+            'longscaler': None,
+            'trainv2':None,
+            'targetv2': None,
+            'realTargetv2': None,
+            'predTargetv2': None,
+            'modelv2': None,
+            'scalerv2': None,
+            'lookbackDatav2': None,
+            'lookbackv2': None,
+            'epochsv2': None,
+            'globalPred': [0],
+            'globalReal': [0],
+            'longpredTargetFin': None,
+            'final': final,
+            "code": code,
+                "changeModel": changeModel,
+                "longPredInput": longPredInput,
+                "changelongPredMod": changelongPredMod,
+                "cancelModel": cancelModel,
+                "cancelLong": cancelLong,
+                "newLookback": newLookback,
+                "newEpoch": newEpoch,
+                "newNeuron": newNeuron,
+                "newLoss": newLoss,
+                "newOptimizer": newOptimizer,
+                "newLongLookback": newLongLookback,
+                "newLongEpoch": newLongEpoch,
+                "newLongNeuron": newLongNeuron,
+                "newLongLoss": newLongLoss,
+                "newLongOptimizer": newLongOptimizer,
+                "numDays": numDays,
+                "count":0}
+
+            variables = json.dumps(variables, cls=CustomEncoder)
+            json_data = graphJSON
+            job = Userdata(job_id = job_id, variables = variables, json_data=json_data, owner = current_user.id)
+            
+            db.session.add(job)
+            db.session.commit()
+
+            scheduler.add_job(func = my_function, trigger='interval', seconds=30, id=job_id)
+            return redirect(url_for('deploy_page'))
+        session['job_id'] = job_id
+
+        if request.method == 'POST':
+            if form.validate_on_submit():
+                if form.stop.data:
+                    job_id = session.get('job_id')
+                    try:
+                        scheduler.remove_job(job_id)
+                    except:
+                        pass
+                    job = Userdata.query.filter_by(job_id=job_id).first()
+                    db.session.delete(job)
+                    db.session.commit()
+                    print("stopped!")
+
+            if form5.validate_on_submit():
+                if form5.download.data:
+                    job_id = session.get('job_id')
+                    job = Userdata.query.filter_by(job_id=job_id).first()
+                    variables = json.loads(job.variables,cls=CustomDecoder)
+                    finaldep = variables['final']
+            
+                    csv_data = io.StringIO()
+                    csv_data.write(finaldep)
+                    
+                    response = make_response(csv_data.getvalue())
+                    response.headers.set('Content-Disposition', 'attachment', filename='final.csv')
+                    response.headers.set('Content-Type', 'text/csv')
+                    return response
+        
+        return render_template('deployment.html', form=form, form5 = form5, dgraphJSON=job.json_data, derrorsDict = {'globalerror': 0, 'modelerror': 0, 'newerror': 0, 'final': pd.DataFrame()})
+
+    else:
+        flash(f'No deployed models! Please click on the Deploy model button', category='danger')
+        return redirect(url_for('dashboard_page'))

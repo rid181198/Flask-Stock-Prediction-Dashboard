@@ -12,7 +12,8 @@ class User(db.Model, UserMixin):
     email_address = db.Column(db.String(length=50), nullable=False, unique=True)
     password_hash = db.Column(db.String(length=60), nullable=False)
     userdata = db.relationship('Userdata', backref='owned_user', lazy=True)
-
+    deploy_status = db.Column(db.Boolean(), default=False)
+    
     @property
     def password(self):
         return self.password
@@ -30,6 +31,7 @@ class Userdata(db.Model):
     json_data = db.Column(db.String(), default='')
     owner = db.Column(db.Integer(), db.ForeignKey('user.id'))
     variables = db.Column(db.String(), default='')
+    
     #def __init__(self, df):
     #    self.json_data = df.to_json()
 

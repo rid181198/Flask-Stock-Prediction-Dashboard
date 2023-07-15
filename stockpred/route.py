@@ -21,6 +21,7 @@ import json
 from datetime import datetime
 import time
 from io import StringIO
+import io
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
@@ -441,8 +442,11 @@ def deploy_page():
                 job = Userdata.query.filter_by(job_id=job_id).first()
                 variables = json.loads(job.variables,cls=CustomDecoder)
                 finaldep = variables['final']
-                print(finaldep)
-                response = make_response(finaldep.to_csv(index=False))
+        
+                csv_data = io.StringIO()
+                csv_data.write(finaldep)
+                
+                response = make_response(csv_data.getvalue())
                 response.headers.set('Content-Disposition', 'attachment', filename='final.csv')
                 response.headers.set('Content-Type', 'text/csv')
                 return response

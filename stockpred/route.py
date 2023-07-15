@@ -10,7 +10,7 @@ import stockpred.scripts.dashboard as dash
 import stockpred.scripts.dashboardDeploy as dashdep
 import plotly
 import plotly.express as px
-from stockpred.forms.dashform import DashFormNewModel, DashFormNewLongModel, generalInputs, cancelForm, longpredForm, DownloadForm, StopDeploy
+from stockpred.forms.dashform import DashFormNewModel, DashFormNewLongModel, generalInputs, cancelForm, longpredForm, DownloadForm, StopDeploy, DeployForm
 from stockpred.forms.user import RegisterForm, LoginForm
 from stockpred.models.register import User, Userdata
 from tensorflow.keras.optimizers.legacy import Adam, SGD, RMSprop
@@ -60,7 +60,8 @@ def dashboard_page():
     form3=cancelForm()
     form4 = longpredForm()
     form5 = DownloadForm()
-    
+    form6 = DeployForm()
+
     if form0.validate_on_submit():
         session['code'] = form0.code.data
         code=form0.code.data
@@ -75,6 +76,17 @@ def dashboard_page():
             session['form2_clicked'] = True
         if request.form.get('form4button1'):
             session['form4_clicked'] = True
+        if request.form.get('deploy'):
+            if current_user.is_authenticated & ('graphJSON' in globals()) :
+                userdata = User.query.filter_by(id = current_user.id).first()
+                userdata.deploy_status = True
+                db.session.add(userdata)
+                db.session.commit()
+                return redirect(url_for('deploy_page'))
+            else:
+                flash(f'Either you are not logged in or you have not run the model first.', category='danger')
+                return redirect(url_for('dashboard_page'))
+            
 
     if form1.validate_on_submit():
         if form1.submitmodel.data:
@@ -165,7 +177,7 @@ def dashboard_page():
         
             return render_template('dashboard.html',  form0=form0, form1=form1,form1errors=form1errors, form2=form2,\
                                    form2errors=form2errors, form3 = form3, form4 = form4,\
-                                     form4errors=form4errors, form5=form5, graphJSON=graphJSON, errorsDict = errorsDict, code=code)
+                                     form4errors=form4errors, form5=form5, form6 = form6,  graphJSON=graphJSON, errorsDict = errorsDict, code=code)
         except:
             flash('You have entered the wrong code! Please look at the meta data guide in the settings.', category='danger')
             return redirect(url_for('dashboard_page'))
@@ -181,7 +193,7 @@ def dashboard_page():
     #    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     #    flash(f"Please enter the code", category='danger')
     return render_template('dashboard.html',  form0=form0, form1=form1, form1errors=form1errors,\
-                            form2=form2,form2errors=form2errors,form3 = form3, form4 = form4,form4errors=form4errors, form5=form5, errorsDict = errorsDict)
+                            form2=form2,form2errors=form2errors,form3 = form3, form4 = form4,form4errors=form4errors, form5=form5, form6 = form6, errorsDict = errorsDict)
 
 
 
@@ -350,7 +362,7 @@ scheduler.start()
 @app.route('/deployment',methods=['GET','POST'])
 @login_required
 def deploy_page():
-    
+
     userdata = User.query.filter_by(id = current_user.id).first()
     if userdata.deploy_status:
 
@@ -436,6 +448,10 @@ def deploy_page():
                     except:
                         pass
                     job = Userdata.query.filter_by(job_id=job_id).first()
+                    userdata = User.query.filter_by(id = current_user.id).first()
+                    userdata.deploy_status = False
+
+                    db.session.add(userdata)
                     db.session.delete(job)
                     db.session.commit()
                     print("stopped!")

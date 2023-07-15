@@ -45,3 +45,6 @@ class DownloadForm(FlaskForm):
 
 class StopDeploy(FlaskForm):
     stop=SubmitField(label='Stop the deployed model')
+
+class DeployForm(FlaskForm):
+    deploy=SubmitField(label='Deploy the current model')

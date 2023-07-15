@@ -4,45 +4,49 @@
 {% endblock %}
 {% block content %}
 
-
+<body>
 <div class="d-flex flex-column">
     <div class="d-grid">
         <div id="chart" class="chart"></div>
     </div>
 
-    <div class="d-flex d-inline flex-row justify-content-center">
-        <div class="container mb-2 p-2 border border-dark font-weight-bolder text-center shadow" id="errors" style="font-size:1.5rem">
-        Default model's global RMSE : <strong>{{ derrorsDict['globalerror'] }}</strong>
+    <div class="d-flex flex-column mt-4">
+      <div class="d-flex d-inline flex-row justify-content-center">
+          <div class="container mb-2 p-2 border border-dark font-weight-bolder text-center shadow" id="errors" style="font-size:1.5rem">
+          Default model's global RMSE : <strong>{{ derrorsDict['globalerror'] }}</strong>
+          </div>
+          
+          <div class="container mb-2 p-2 border border-dark font-weight-bolder text-center shadow" id="errors" style="font-size:1.5rem">
+          Default model's current RMSE : <strong>{{ derrorsDict['modelerror'] }}</strong>
+          </div>
+
+      </div>
+
+      <div class="d-flex d-inline justify-content-center mt-3">
+          <div class="container mb-2 p-2 border border-dark font-weight-bolder text-center shadow" id="errors" style="font-size:1.5rem">
+          Your model's current RMSE : <strong>{{ derrorsDict['newerror'] }}</strong>
+          </div>
+      </div>
+
+      <div class="d-flex d-inline flex-row justify-content-center mt-5">
+        
+        <div>
+          <form method="POST">
+            {{ form5.hidden_tag() }}
+            {{ form5.download(class='btn btn-md-md btn-outline-dark btn-light me-5',style="font-size:1.5rem", onclick="startLoading()") }}
+          </form>
+        </div>
+        <div>
+          <form method="POST" id="errors" style="font-size:1.5rem">
+            {{ form.hidden_tag() }}
+            {{ form.stop(class='btn btn-md-md btn-outline-dark btn-light mb-3',style="font-size:1.5rem", onclick="startLoading()") }}
+          </form>
         </div>
         
-        <div class="container mb-2 p-2 border border-dark font-weight-bolder text-center shadow" id="errors" style="font-size:1.5rem">
-        Default model's current RMSE : <strong>{{ derrorsDict['modelerror'] }}</strong>
-        </div>
-
+      </div>
     </div>
-
-    <div class="d-flex d-inline justify-content-center mt-3">
-        <div class="container mb-2 p-2 border border-dark font-weight-bolder text-center shadow" id="errors" style="font-size:1.5rem">
-        Your model's current RMSE : <strong>{{ derrorsDict['newerror'] }}</strong>
-        </div>
-    </div>
-
-    <div class="d-flex d-inline flex-row justify-content-center mt-5">
-      
-      <form method="POST">
-        {{ form5.hidden_tag() }}
-        {{ form5.download(class='btn btn-md-md btn-outline-dark btn-light me-5',style="font-size:1.5rem", onclick="startLoading()") }}
-      </form>
-      
-      <form method="POST" id="errors" style="font-size:1.5rem">
-        {{ form.hidden_tag() }}
-        {{ form.stop(class='btn btn-md-md btn-outline-dark btn-light',style="font-size:1.5rem", onclick="startLoading()") }}
-      </form>
-
-    </div>
-    
 </div>
-
+</body>
 
 <script type="text/javascript">
     var graphs = {{dgraphJSON | safe}};

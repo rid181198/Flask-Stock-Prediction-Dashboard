@@ -343,7 +343,7 @@ def my_function():
                 variables['globalReal'] = newVariable['globalReal']
                 variables['longpredTargetFin'] = newVariable['longpredTargetFin']
                 variables['final'] = newVariable['final']
-
+                print(variables["changeModel"], variables["newEpoch"], variables['modelv2'])
                 #Create graphJSON
                 dgraphJSON = json.dumps(dfig, cls=plotly.utils.PlotlyJSONEncoder)
                 derrorsDict = {'globalerror': variables['rmseGlobal'], 'modelerror': variables['rmseModel'], 'newerror': variables['rmseNew'], 'final': variables['final']}
@@ -427,7 +427,9 @@ def deploy_page():
                 "newLongOptimizer": newLongOptimizer,
                 "numDays": numDays,
                 "count":0}
-
+            print("#################################################")
+            print(changeModel, newEpoch)
+            print("#################################################")
             variables = json.dumps(variables, cls=CustomEncoder)
             json_data = graphJSON
             job = Userdata(job_id = job_id, variables = variables, json_data=json_data, owner = current_user.id)

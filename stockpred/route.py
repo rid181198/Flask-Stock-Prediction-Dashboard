@@ -96,6 +96,7 @@ def dashboard_page():
             newNeuron = form1.newNeuron.data
             newLoss = form1.newLoss.data
             newOptimizer = form1.newOptimizer.data
+            
             if newOptimizer == 'Adam':
                 newOptimizer = Adam()
             if newOptimizer == 'SGD':
@@ -104,7 +105,7 @@ def dashboard_page():
                 newOptimizer = RMSprop()
         if form1.submitmodel.data and len(code) == 0 :
             flash("Please enter the code first and run the prediction model!", category='danger') 
-
+    
 
   
     form1errors=[]
@@ -168,6 +169,19 @@ def dashboard_page():
             graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
             errorsDict = {'globalerror': globalerror, 'modelerror': modelerror, 'newerror': newerror, 'final': final}
           
+            print("#################################################")
+            print(changeModel, newEpoch)
+            print("#################################################")
+
+            code, changeModel, longPredInput,\
+            changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
+            newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays, fig, globalerror, modelerror, newerror, final, graphJSON = \
+            code, changeModel, longPredInput,\
+            changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
+            newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays, fig, globalerror, modelerror, newerror, final, graphJSON
+
+
+
             if form5.validate_on_submit():
                 if form5.download.data:
                     response = make_response(final.to_csv(index=False))

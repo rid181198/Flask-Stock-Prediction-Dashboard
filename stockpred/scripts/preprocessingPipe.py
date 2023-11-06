@@ -18,7 +18,7 @@ class preProcessing():
         
       
     #loading the data
-    def dataLoading(self, startDate='2023-09-20'):
+    def dataLoading(self, startDate='2023-11-05'):
         #filtering the target variable
         
     

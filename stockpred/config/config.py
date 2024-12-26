@@ -6,7 +6,10 @@ Created on Wed Feb 15 21:11:48 2023
 @author: rid
 """
 
-from tensorflow.keras.optimizers.legacy import Adam
+
+from tensorflow.keras.optimizers import Adam
+
+
 
 lookback=2
 code='AAPL'

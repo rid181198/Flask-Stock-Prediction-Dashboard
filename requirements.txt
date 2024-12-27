@@ -7,7 +7,7 @@ SQLAlchemy
 pandas
 numpy
 scikit-learn
-tensorflow
+tensorflow-cpu
 plotly
 apscheduler
 pandas-datareader

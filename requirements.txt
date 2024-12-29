@@ -16,3 +16,4 @@ yfinance
 holidays
 WTForms
 gunicorn==20.1.0
+psycopg2

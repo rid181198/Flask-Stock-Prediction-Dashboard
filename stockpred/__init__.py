@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 import os
+from dotenv import load_dotenv
+load_dotenv()
 db_password = os.getenv('DB_PASSWORD')
 
 app=Flask(__name__)

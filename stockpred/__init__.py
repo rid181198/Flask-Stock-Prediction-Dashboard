@@ -9,7 +9,7 @@ db_password = os.getenv('DB_PASSWORD')
 
 app=Flask(__name__)
 DATABASE_URL = f"postgresql://postgres.xadfhwcdjdeqdkxquphp:{db_password}@aws-0-eu-central-1.pooler.supabase.com:6543/postgres"
-print(DATABASE_URL)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

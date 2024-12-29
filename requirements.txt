@@ -18,3 +18,4 @@ WTForms
 gunicorn==20.1.0
 psycopg2
 python-dotenv
+email-validator

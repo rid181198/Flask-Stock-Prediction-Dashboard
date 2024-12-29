@@ -3,9 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 import os
+db_password = os.getenv('DB_PASSWORD')
 
 app=Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///stocks.db'
+DATABASE_URL = f"postgresql://postgres.xadfhwcdjdeqdkxquphp:{db_password}@aws-0-eu-central-1.pooler.supabase.com:6543/postgres"
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = '2b8c674fd1815cb4c61fb207'
 app.add_url_rule('/source/<filename>', endpoint='source', view_func=app.send_static_file)

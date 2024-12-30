@@ -4,6 +4,7 @@ from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 import os
 from dotenv import load_dotenv
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 load_dotenv()
 db_password = os.getenv('DB_PASSWORD')
 

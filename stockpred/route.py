@@ -161,6 +161,7 @@ def dashboard_page():
 
 
     if code:
+        print(code)
         try:
             fig, globalerror, modelerror, newerror, final = dash.updates(code, changeModel, longPredInput,\
                         changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\

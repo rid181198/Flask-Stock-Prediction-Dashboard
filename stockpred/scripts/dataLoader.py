@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import yfinance as yf
 from datetime import date
 import tensorflow as tf
-from tensorflow.keras.optimizers.legacy import Adam
+from tensorflow.keras.optimizers import Adam
 import yfinance as yf
 today = str(date.today())
 

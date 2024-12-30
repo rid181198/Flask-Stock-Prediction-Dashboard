@@ -68,7 +68,8 @@ def dashboard_page():
     elif 'code' in session:
         form0.code.data = session['code']
         code=session['code']
-
+    print(code)
+    
     if request.method == 'POST':
         if request.form.get('form1button1'):
             session['form1_clicked'] = True
@@ -161,7 +162,6 @@ def dashboard_page():
 
 
     if code:
-        print(code)
         try:
             fig, globalerror, modelerror, newerror, final = dash.updates(code, changeModel, longPredInput,\
                         changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\

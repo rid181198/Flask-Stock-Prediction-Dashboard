@@ -102,10 +102,13 @@ def preloading(dataset,lookback = conf.lookback,code=conf.code, epochs=conf.epoc
     history = history[:,0]
     
     
-    print(preprocessor) 
+    
     lookbackData = np.array(history[:lookback])
     scaler = preprocessor.dataScaling()[0]  
     train, target = preprocessor.windowGenerator()
+    print(neurons)
+    print(optimizer)
+    print(loss)
     model  = LSTMmodelPipe(neurons, optimizer, loss,(train.shape[1],1)).modelGenerator()
     model.summary()
     

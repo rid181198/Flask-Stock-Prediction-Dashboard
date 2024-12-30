@@ -14,6 +14,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = '2b8c674fd1815cb4c61fb207'
+app.config['WTF_CSRF_ENABLED'] = True
 app.add_url_rule('/source/<filename>', endpoint='source', view_func=app.send_static_file)
 db=SQLAlchemy(app)
 bcrypt=Bcrypt(app)

@@ -18,7 +18,7 @@ class preProcessing():
         
       
     #loading the data
-    def dataLoading(self, startDate=today - timedelta(days=3)):
+    def dataLoading(self, startDate=datetime.today()- timedelta(days=3)):
         #filtering the target variable
         
     

@@ -8,8 +8,8 @@ Created on Mon Feb 13 20:57:36 2023
 
 #from preprocessingPipe import preProcessing
 #from dataLoader import dataFrame
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, LSTM, Input
+from keras.models import Sequential
+from keras.layers import Dense, LSTM, Input
 #from tensorflow.keras.optimizers.legacy import Adam
 
 

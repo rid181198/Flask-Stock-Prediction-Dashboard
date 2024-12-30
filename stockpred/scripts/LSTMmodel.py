@@ -9,7 +9,7 @@ Created on Mon Feb 13 20:57:36 2023
 #from preprocessingPipe import preProcessing
 #from dataLoader import dataFrame
 from keras.models import Sequential
-from keras.layers import Dense, LSTM
+from keras.layers import Dense, LSTM, Input
 #from tensorflow.keras.optimizers.legacy import Adam
 
 
@@ -24,8 +24,8 @@ class LSTMmodelPipe():
         
     def modelGenerator(self):
         self.model = Sequential()
-        self.model.add(LSTM(self.neurons, return_sequences=True, input_shape= self.input_shape))
-        self.model.add(LSTM(self.neurons, return_sequences=False))
+        self.model.add(Input(shape=self.input_shape))  # Replace time_steps and features with your values
+        self.model.add(LSTM(self.neurons, return_sequences=True))
         self.model.add(Dense(self.neurons/2))
         self.model.add(Dense(1))
 

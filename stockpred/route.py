@@ -32,7 +32,7 @@ def home_page():
 
 
 
-@app.before_request
+@app.before_first_request
 def clear_session():
     session.clear()
     session['code'] = ''

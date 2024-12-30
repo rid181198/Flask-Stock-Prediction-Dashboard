@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
-from tensorflow.keras.models import Sequential
+from keras.models import Sequential
 import json
 import stockpred.scripts.dashboard as dash
 import stockpred.scripts.dashboardDeploy as dashdep
@@ -13,7 +13,7 @@ import plotly.express as px
 from stockpred.forms.dashform import DashFormNewModel, DashFormNewLongModel, generalInputs, cancelForm, longpredForm, DownloadForm, StopDeploy, DeployForm
 from stockpred.forms.user import RegisterForm, LoginForm
 from stockpred.models.register import User, Userdata
-from tensorflow.keras.optimizers import Adam, SGD, RMSprop
+from keras.optimizers import Adam, SGD, RMSprop
 from flask_login import login_user, logout_user, login_required, current_user
 from stockpred import db
 import uuid

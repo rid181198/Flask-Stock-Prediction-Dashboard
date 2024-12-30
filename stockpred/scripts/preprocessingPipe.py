@@ -7,7 +7,7 @@ Created on Mon Feb 13 20:36:53 2023
 """
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class preProcessing():
@@ -18,7 +18,7 @@ class preProcessing():
         
       
     #loading the data
-    def dataLoading(self, startDate='2024-12-20'):
+    def dataLoading(self, startDate=today - timedelta(days=3)):
         #filtering the target variable
         
     

@@ -40,7 +40,7 @@ class preProcessing():
         
         self.closeTarget = self.closeTarget.reshape(len(self.closeTarget),1)
         
-        print(self.dataset)
+        
         return  self.closeTarget,  self.dateTarget
         
      #scaling the data   

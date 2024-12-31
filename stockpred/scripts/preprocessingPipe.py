@@ -23,8 +23,7 @@ class preProcessing():
     def dataLoading(self, startDate=(date.today()- timedelta(days=5)).strftime('%Y-%m-%d')):
         #filtering the target variable
         
-    
-        self.dataset['Date'] = pd.to_datetime(self.dataset['Date'], errors='coerce')
+        print(self.dataset['Date'])
 
         booleanCond=[]
         for i in self.dataset['Date']:

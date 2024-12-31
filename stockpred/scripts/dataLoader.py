@@ -13,7 +13,8 @@ from pandas_datareader import data
 import matplotlib.pyplot as plt
 import yfinance as yf
 from datetime import date
-from keras.optimizers import Adam
+import tensorflow as tf
+from tensorflow.keras.optimizers.legacy import Adam
 import yfinance as yf
 today = str(date.today())
 
@@ -25,10 +26,8 @@ def dataFrame(code):
                 interval = "1d",       # trading interval
                 ignore_tz = True,      # ignore timezone when aligning data from different exchanges?
                 prepost = False) 
-    print(tickerData)
     tickerData = tickerData.reset_index()
     tickerData['Date'] = pd.to_datetime(tickerData['Date'])
-    print(tickerData)
     
     return tickerData
 

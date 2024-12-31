@@ -25,18 +25,22 @@ class preProcessing():
     
         
         booleanCond=[]
-        
+        print(self.dataset['Date'].apply(type)) 
+        print(self.dataset['Date'])
+        print("passed1")
         for i in self.dataset['Date'].tolist():
+            print("passed1")
             if isinstance(i, str):
                 i = datetime.strptime(i, '%Y-%m-%d')
             elif isinstance(i, (pd.Timestamp, datetime)):  # If already a datetime, do nothing
                 pass
+            print("passed1")
             i = i.date()
             if i<=datetime.date(datetime.strptime(startDate, '%Y-%m-%d')):
                 booleanCond.append(True)
             else:
                 booleanCond.append(False)
-
+        print("passed1")
 
         self.dateTarget = self.dataset[booleanCond].Date
         

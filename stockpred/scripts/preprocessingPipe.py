@@ -25,7 +25,7 @@ class preProcessing():
     
         
         booleanCond=[]
-        for i in self.dataset['Date'].tolist():
+        for i in self.dataset['Date']:
            
             #if isinstance(i, str):
             #    print("passed1")

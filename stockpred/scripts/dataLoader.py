@@ -25,10 +25,10 @@ def dataFrame(code):
                 interval = "1d",       # trading interval
                 ignore_tz = True,      # ignore timezone when aligning data from different exchanges?
                 prepost = False) 
-    print(tickerdata)
+    print(tickerData)
     tickerData = tickerData.reset_index()
     tickerData['Date'] = pd.to_datetime(tickerData['Date'])
-    print(tickerdata)
+    print(tickerData)
     
     return tickerData
 

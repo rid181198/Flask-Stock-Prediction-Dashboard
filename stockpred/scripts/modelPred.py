@@ -107,10 +107,10 @@ def preloading(dataset,lookback = conf.lookback,code=conf.code, epochs=conf.epoc
     scaler = preprocessor.dataScaling()[0]  
     train, target = preprocessor.windowGenerator()
     model  = LSTMmodelPipe(neurons, optimizer, loss,(train.shape[1],1)).modelGenerator()
-    print(model.summary())
+    model.summary()
     
     mf.fitter(train,target,model, epochs=epochs)
-    print("passed")
+    
     
     predTarget=[]
     realTarget=[]
@@ -119,7 +119,7 @@ def preloading(dataset,lookback = conf.lookback,code=conf.code, epochs=conf.epoc
     longscaler=[]
     
     predTarget.append(mf.futurePred(train,target,model,scaler,lookback=lookback))
-    
+  
     
     
 

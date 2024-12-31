@@ -193,8 +193,9 @@ def dashboard_page():
             return render_template('dashboard.html',  form0=form0, form1=form1,form1errors=form1errors, form2=form2,\
                                    form2errors=form2errors, form3 = form3, form4 = form4,\
                                      form4errors=form4errors, form5=form5, form6 = form6,  graphJSON=graphJSON, errorsDict = errorsDict, code=code)
-        except:
-            flash('You have entered the wrong code! Please look at the meta data guide in the settings.', category='danger')
+        except Exception as e:
+            print(e)
+            flash(f'You have entered the wrong code! Please look at the meta data guide in the settings. The actual error {e}', category='danger')
             return redirect(url_for('dashboard_page'))
         
     else:

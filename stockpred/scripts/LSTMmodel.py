@@ -23,14 +23,13 @@ class LSTMmodelPipe():
         self.input_shape = input_shape
         
     def modelGenerator(self):
-        print(self.input_shape)
-      
         self.model = Sequential()
-        self.model.add(Input(shape=tuple(self.input_shape)))  # Replace time_steps and features with your values
+        self.model.add(Input(shape=self.input_shape))  # Replace time_steps and features with your values
         self.model.add(LSTM(self.neurons, return_sequences=True))
+        self.model.add(LSTM(self.neurons, return_sequences=False))
         self.model.add(Dense(self.neurons/2))
         self.model.add(Dense(1))
-        print(self.model)
+
         self.model.compile(optimizer= self.optimizer, loss=self.loss)
         
         return self.model

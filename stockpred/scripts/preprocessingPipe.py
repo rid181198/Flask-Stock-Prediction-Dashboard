@@ -24,7 +24,7 @@ class preProcessing():
     
         
         booleanCond=[]
-        
+        print(self.dataset['Date'])
         for i in self.dataset['Date']:
             if isinstance(i, str):
                 i = datetime.strptime(i, '%Y-%m-%d')

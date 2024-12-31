@@ -15,7 +15,7 @@ from datetime import date
 class preProcessing():
     
     def __init__(self, dataset, lookback):
-        self.dataset = dataset
+        self.dataset = pd.DataFrame(dataset)
         self.lookback = lookback
         self.loopdata = dataset.loc[:, 'Date']
         

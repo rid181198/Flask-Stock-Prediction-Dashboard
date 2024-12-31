@@ -34,9 +34,9 @@ class preProcessing():
             #elif isinstance(i, (pd.Timestamp, datetime)):  # If already a datetime, do nothing
             #    print("passed1")
             #    pass
-            print("passed1")
+            print(i)
             i = i.date()
-            print("passed1")
+            print("passed2")
             if i<=datetime.date(datetime.strptime(startDate, '%Y-%m-%d')):
                 booleanCond.append(True)
             else:

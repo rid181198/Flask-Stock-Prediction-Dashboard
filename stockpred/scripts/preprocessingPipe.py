@@ -6,6 +6,7 @@ Created on Mon Feb 13 20:36:53 2023
 @author: rid
 """
 import numpy as np
+import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from datetime import datetime, timedelta
 from datetime import date

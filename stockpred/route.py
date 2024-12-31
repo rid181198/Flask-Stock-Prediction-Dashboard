@@ -160,7 +160,7 @@ def dashboard_page():
             else:
                 flash("Please enter the code first and run the prediction model!", category='danger')
 
-
+    code="AAPL"
     if code:
         try:
             fig, globalerror, modelerror, newerror, final = dash.updates(code, changeModel, longPredInput,\

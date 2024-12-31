@@ -26,7 +26,7 @@ class LSTMmodelPipe():
         print(self.input_shape)
       
         self.model = Sequential()
-        self.model.add(Input(shape=self.input_shape))  # Replace time_steps and features with your values
+        self.model.add(Input(shape=tuple(self.input_shape)))  # Replace time_steps and features with your values
         self.model.add(LSTM(self.neurons, return_sequences=True))
         self.model.add(Dense(self.neurons/2))
         self.model.add(Dense(1))

@@ -24,14 +24,13 @@ class preProcessing():
     
         
         booleanCond=[]
-        print(self.dataset['Date'].tolist())
-        for i in self.dataset['Date'].tolist():
-            print(i)
-        for i in self.dataset['Date'].tolist():
-            if isinstance(i, str):
-                i = datetime.strptime(i, '%Y-%m-%d')
-            i=datetime.date(i)
-            if i<=datetime.date(datetime.strptime(startDate, '%Y-%m-%d')):
+       
+        for i in self.dataset['Date']:
+            # Convert the numpy.datetime64 object to a Python datetime.date object
+            i = i.date()
+    
+            # Compare with the start date
+            if i <= datetime.strptime(startDate, '%Y-%m-%d').date():
                 booleanCond.append(True)
             else:
                 booleanCond.append(False)

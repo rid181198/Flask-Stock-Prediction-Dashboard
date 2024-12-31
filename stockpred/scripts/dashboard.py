@@ -1,37 +1,71 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Feb 12 21:28:03 2023
-
-@author: rid
-"""
 
 
-import numpy as np
-import pandas as pd
-from pandas_datareader import data
-import matplotlib.pyplot as plt
-import yfinance as yf
+import stockpred.scripts.modelPred as mp
+import stockpred.scripts.dashboard as dashapp
+from datetime import timedelta
+
 from datetime import date
-import tensorflow as tf
-from tensorflow.keras.optimizers.legacy import Adam
-import yfinance as yf
-today = str(date.today())
 
 
-# download dataframe and stock data
-def dataFrame(code):
-    tickerData = yf.download(tickers = code,  # list of tickers
-                period = "max",         # time period
-                interval = "1d",       # trading interval
-                ignore_tz = True,      # ignore timezone when aligning data from different exchanges?
-                prepost = False) 
-    tickerData = tickerData.reset_index()
-    tickerData['Date'] = pd.to_datetime(tickerData['Date'])
     
-    return tickerData
+    
+    
+    
+    
+globalPred = []
+globalReal = []
+prevCode=''
+dataset, history, historyDate, train, target, realTarget, predTarget,\
+    model, scaler, lookback, lookbackData, epochs, dates, longpredTarget,\
+        longmodel,longscaler = 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+        
+trainv2,targetv2,realTargetv2,predTargetv2,\
+            modelv2,scalerv2,\
+                lookbackDatav2,lookbackv2, epochsv2 = 0,0,0,0,0,0,0,0,0
+longpredTargetFin=0
 
 
+
+def updates(code, changeModel, longPredInput,\
+                changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
+                    newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays):
+    
+    
+    
+    fig, rmseGlobal, rmseModel, rmseNew, newCode, \
+    dataset, history, historyDate, train, target, realTarget, predTarget,\
+    model, scaler, lookback, lookbackData, epochs, dates, longpredTarget,\
+    longmodel,longscaler,trainv2,targetv2,realTargetv2,predTargetv2,\
+    modelv2,scalerv2,lookbackDatav2,lookbackv2, epochsv2,globalPred, globalReal, longpredTargetFin, final=\
+    mp.realTimePred(dashapp.globalPred, dashapp.globalReal, code, changeModel, longPredInput,\
+    changelongPredMod, cancelModel, cancelLong, dashapp.prevCode, \
+    dashapp.dataset, dashapp.history, dashapp.historyDate, dashapp.train, dashapp.target, dashapp.realTarget, dashapp.predTarget,\
+    dashapp.model, dashapp.scaler, dashapp.lookback, dashapp.lookbackData, dashapp.epochs, dashapp.dates, dashapp.longpredTarget,\
+    dashapp.longmodel,dashapp.longscaler,
+    dashapp.trainv2,dashapp.targetv2,dashapp.realTargetv2,dashapp.predTargetv2,\
+    dashapp.modelv2,dashapp.scalerv2,\
+    dashapp.lookbackDatav2,dashapp.lookbackv2, dashapp.epochsv2, dashapp.longpredTargetFin,\
+        newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
+            newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays)
+        
+  
+    
+    
+    dashapp.prevCode = newCode
+    dashapp.dataset, dashapp.history, dashapp.historyDate, dashapp.train, dashapp.target, dashapp.realTarget, dashapp.predTarget,\
+    dashapp.model, dashapp.scaler, dashapp.lookback, dashapp.lookbackData, dashapp.epochs, dashapp.dates, dashapp.longpredTarget,\
+    dashapp.longmodel,dashapp.longscaler = dataset, history, historyDate, train, target, realTarget, predTarget,\
+    model, scaler, lookback, lookbackData, epochs, dates, longpredTarget,longmodel,longscaler
+                    
+    dashapp.trainv2,dashapp.targetv2,dashapp.realTargetv2,dashapp.predTargetv2,\
+    dashapp.modelv2,dashapp.scalerv2,dashapp.lookbackDatav2,dashapp.lookbackv2, dashapp.epochsv2=\
+    trainv2,targetv2,realTargetv2,predTargetv2,modelv2,scalerv2,lookbackDatav2,lookbackv2, epochsv2
+    
+    dashapp.globalPred, dashapp.globalReal, dashapp.longpredTargetFin= globalPred, globalReal, longpredTargetFin
+  
+    return fig, rmseGlobal,\
+        rmseModel,\
+           rmseNew, final
 
 
 

@@ -17,16 +17,17 @@ class preProcessing():
     def __init__(self, dataset, lookback):
         self.dataset = dataset
         self.lookback = lookback
+        self.loopdata = dataset['Date']
         
       
     #loading the data
     def dataLoading(self, startDate=(date.today()- timedelta(days=5)).strftime('%Y-%m-%d')):
         #filtering the target variable
         
-        print(self.dataset['Date'])
+     
 
         booleanCond=[]
-        for i in self.dataset['Date']:
+        for i in self.loopdata:
            
             #if isinstance(i, str):
             #    print("passed1")
@@ -44,7 +45,7 @@ class preProcessing():
                 booleanCond.append(True)
             else:
                 booleanCond.append(False)
-        print("passed1")
+        
 
         self.dateTarget = self.dataset[booleanCond].Date
         
@@ -52,7 +53,8 @@ class preProcessing():
         
         self.closeTarget = self.closeTarget.reshape(len(self.closeTarget),1)
         
-        
+        print("passed1")
+        print(self.dateTarget)
         return  self.closeTarget,  self.dateTarget
         
      #scaling the data   

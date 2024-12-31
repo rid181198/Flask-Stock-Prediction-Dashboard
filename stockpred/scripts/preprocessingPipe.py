@@ -28,14 +28,15 @@ class preProcessing():
         
         for i in self.dataset['Date'].tolist():
             print("passed1")
-            if isinstance(i, str):
-                print("passed1")
-                i = datetime.strptime(i, '%Y-%m-%d')
-            elif isinstance(i, (pd.Timestamp, datetime)):  # If already a datetime, do nothing
-                print("passed1")
-                pass
+            #if isinstance(i, str):
+            #    print("passed1")
+            #    i = datetime.strptime(i, '%Y-%m-%d')
+            #elif isinstance(i, (pd.Timestamp, datetime)):  # If already a datetime, do nothing
+            #    print("passed1")
+            #    pass
             print("passed1")
             i = i.date()
+            print("passed1")
             if i<=datetime.date(datetime.strptime(startDate, '%Y-%m-%d')):
                 booleanCond.append(True)
             else:

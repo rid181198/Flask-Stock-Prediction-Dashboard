@@ -25,7 +25,7 @@ class preProcessing():
         
         booleanCond=[]
        
-        for i in self.dataset['Date']:
+        for i in self.dataset['Date'].tolist():
             # Convert the numpy.datetime64 object to a Python datetime.date object
             i = i.date()
     

@@ -17,7 +17,7 @@ class preProcessing():
     def __init__(self, dataset, lookback):
         self.dataset = dataset
         self.lookback = lookback
-        self.loopdata = dataset['Date']
+        self.loopdata = dataset.loc[:, 'Date']
         
       
     #loading the data

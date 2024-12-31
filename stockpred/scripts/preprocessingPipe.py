@@ -17,18 +17,15 @@ class preProcessing():
     def __init__(self, dataset, lookback):
         self.dataset = dataset
         self.lookback = lookback
-        self.loopdata = dataset.loc[:, 'Date']
         
       
     #loading the data
     def dataLoading(self, startDate=(date.today()- timedelta(days=5)).strftime('%Y-%m-%d')):
         #filtering the target variable
-        
-     
-        print(type(self.dataset))
+    
         
         booleanCond=[]
-        for i in self.loopdata:
+        for i in self.dataset['Date']:
            
             #if isinstance(i, str):
             #    print("passed1")

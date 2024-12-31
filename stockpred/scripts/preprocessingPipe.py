@@ -15,7 +15,7 @@ from datetime import date
 class preProcessing():
     
     def __init__(self, dataset, lookback):
-        self.dataset = pd.DataFrame(dataset)
+        self.dataset = dataset
         self.lookback = lookback
         self.loopdata = dataset.loc[:, 'Date']
         
@@ -25,7 +25,8 @@ class preProcessing():
         #filtering the target variable
         
      
-        print(self.dataset)
+        print(type(self.dataset))
+        
         booleanCond=[]
         for i in self.loopdata:
            

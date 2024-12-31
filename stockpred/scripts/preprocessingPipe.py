@@ -6,10 +6,8 @@ Created on Mon Feb 13 20:36:53 2023
 @author: rid
 """
 import numpy as np
-import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from datetime import datetime, timedelta
-from datetime import date
 
 
 class preProcessing():
@@ -20,30 +18,21 @@ class preProcessing():
         
       
     #loading the data
-    def dataLoading(self, startDate=(date.today()- timedelta(days=5)).strftime('%Y-%m-%d')):
+    def dataLoading(self, startDate=(datetime.today()- timedelta(days=5)).strftime('%Y-%m-%d')):
         #filtering the target variable
+        
     
         
         booleanCond=[]
-        for i in self.dataset['Date']:
-           
-            #if isinstance(i, str):
-            #    print("passed1")
-            #    i = datetime.strptime(i, '%Y-%m-%d')
-            #elif isinstance(i, (pd.Timestamp, datetime)):  # If already a datetime, do nothing
-            #    print("passed1")
-            #    pass
-
-            #print("step1")
-            #i = pd.to_datetime(i).date()  # This ensures i is a valid Timestamp
-            #print(i)
-            #print("step2")
         
+        for i in self.dataset['Date']:
+            if isinstance(i, str):
+                i = datetime.strptime(i, '%Y-%m-%d')
+            i=datetime.date(i)
             if i<=datetime.date(datetime.strptime(startDate, '%Y-%m-%d')):
                 booleanCond.append(True)
             else:
                 booleanCond.append(False)
-        
 
         self.dateTarget = self.dataset[booleanCond].Date
         
@@ -51,8 +40,7 @@ class preProcessing():
         
         self.closeTarget = self.closeTarget.reshape(len(self.closeTarget),1)
         
-        print("passed1")
-        print(self.dateTarget)
+     
         return  self.closeTarget,  self.dateTarget
         
      #scaling the data   

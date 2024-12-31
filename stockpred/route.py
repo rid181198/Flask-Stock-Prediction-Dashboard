@@ -20,6 +20,7 @@ import uuid
 import json
 from datetime import datetime
 import time
+import traceback
 from io import StringIO
 import io
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -194,6 +195,7 @@ def dashboard_page():
                                    form2errors=form2errors, form3 = form3, form4 = form4,\
                                      form4errors=form4errors, form5=form5, form6 = form6,  graphJSON=graphJSON, errorsDict = errorsDict, code=code)
         except Exception as e:
+            print(traceback.format_exc())
             print(e)
             flash(f'You have entered the wrong code! Please look at the meta data guide in the settings. The actual error {e}', category='danger')
             return redirect(url_for('dashboard_page'))

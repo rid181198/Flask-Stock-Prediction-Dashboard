@@ -36,10 +36,10 @@ class preProcessing():
             #    print("passed1")
             #    pass
 
-            print("step1")
-            i = pd.to_datetime(i).date()  # This ensures i is a valid Timestamp
-            print(i)
-            print("step2")
+            #print("step1")
+            #i = pd.to_datetime(i).date()  # This ensures i is a valid Timestamp
+            #print(i)
+            #print("step2")
         
             if i<=datetime.date(datetime.strptime(startDate, '%Y-%m-%d')):
                 booleanCond.append(True)

@@ -25,7 +25,7 @@ class preProcessing():
         #filtering the target variable
         
      
-
+        print(self.dataset)
         booleanCond=[]
         for i in self.loopdata:
            

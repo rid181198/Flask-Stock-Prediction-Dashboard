@@ -8,6 +8,7 @@ Created on Mon Feb 13 20:36:53 2023
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from datetime import datetime, timedelta
+from datetime import date
 
 
 class preProcessing():
@@ -18,22 +19,24 @@ class preProcessing():
         
       
     #loading the data
-    def dataLoading(self, startDate=(datetime.today()- timedelta(days=5)).strftime('%Y-%m-%d')):
+    def dataLoading(self, startDate=(date.today()- timedelta(days=5)).strftime('%Y-%m-%d')):
         #filtering the target variable
         
     
         
         booleanCond=[]
-       
+        
         for i in self.dataset['Date'].tolist():
-            # Convert the numpy.datetime64 object to a Python datetime.date object
+            if isinstance(i, str):
+                i = datetime.strptime(i, '%Y-%m-%d')
+            elif isinstance(i, (pd.Timestamp, datetime)):  # If already a datetime, do nothing
+                pass
             i = i.date()
-    
-            # Compare with the start date
-            if i <= datetime.strptime(startDate, '%Y-%m-%d').date():
+            if i<=datetime.date(datetime.strptime(startDate, '%Y-%m-%d')):
                 booleanCond.append(True)
             else:
                 booleanCond.append(False)
+
 
         self.dateTarget = self.dataset[booleanCond].Date
         

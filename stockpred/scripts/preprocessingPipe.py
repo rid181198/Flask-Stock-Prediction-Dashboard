@@ -23,7 +23,8 @@ class preProcessing():
         #filtering the target variable
         
     
-        
+        self.dataset['Date'] = pd.to_datetime(self.dataset['Date'], errors='coerce')
+
         booleanCond=[]
         for i in self.dataset['Date']:
            

@@ -148,6 +148,9 @@ def preloading(dataset,lookback = conf.lookback,code=conf.code, epochs=conf.epoc
     
     
 def init(code, prevCode):
+    print("hello code")
+    print(code)
+    print(prevCode)
     if (code==prevCode) == False:
         dataset =  dataFrame(code)
         
@@ -179,9 +182,11 @@ def realTimePred(globalPred, globalReal, code, changeModel, longPredInput, chang
                              newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays ):
     
     try:
+        print("hello first")
         dataset, history, historyDate, train, target, realTarget, predTarget,\
             model, scaler, lookback, lookbackData, epochs, dates, longpredTarget,\
                 longmodel,longscaler = init(code, prevCode)
+        print(dataset)
     except:
         pass
    

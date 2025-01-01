@@ -19,7 +19,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 import plotly.express as px
-
+import traceback
 import stockpred.config.config as conf
 import plotly.io as pio
 pio.renderers.default='browser'
@@ -106,8 +106,6 @@ def preloading(dataset,lookback = conf.lookback,code=conf.code, epochs=conf.epoc
     lookbackData = np.array(history[:lookback])
     scaler = preprocessor.dataScaling()[0]  
     train, target = preprocessor.windowGenerator()
-    print("i am here")
-    print(train.shape[1])
     model  = LSTMmodelPipe(neurons, optimizer, loss,(train.shape[1],1)).modelGenerator()
     model.summary()
     
@@ -150,9 +148,7 @@ def preloading(dataset,lookback = conf.lookback,code=conf.code, epochs=conf.epoc
     
     
 def init(code, prevCode):
-    print("hello code")
-    print(code)
-    print(prevCode)
+   
     if (code==prevCode) == False:
         dataset =  dataFrame(code)
         
@@ -184,12 +180,17 @@ def realTimePred(globalPred, globalReal, code, changeModel, longPredInput, chang
                              newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays ):
     
     try:
-        print("hello first")
         dataset, history, historyDate, train, target, realTarget, predTarget,\
             model, scaler, lookback, lookbackData, epochs, dates, longpredTarget,\
                 longmodel,longscaler = init(code, prevCode)
-        print(dataset)
-    except:
+  
+    except Exception as e:
+        # Print detailed traceback
+        print("An exception occurred:")
+        traceback.print_exc()
+        # You can also log the error message or use it programmatically
+        error_message = traceback.format_exc()
+        print(f"Formatted traceback: {error_message}")
         pass
    
     

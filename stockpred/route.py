@@ -43,6 +43,7 @@ def dashboard_page():
         changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
         newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays, fig, globalerror, modelerror, newerror, final, graphJSON
 
+    code=""
     changeModel=False
     changelongPredMod=False
     longPredInput=False

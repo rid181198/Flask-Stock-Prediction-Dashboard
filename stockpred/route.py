@@ -43,7 +43,7 @@ def dashboard_page():
         changelongPredMod, cancelModel, cancelLong, newLookback, newEpoch, newNeuron, newLoss, newOptimizer,\
         newLongLookback, newLongEpoch, newLongNeuron, newLongLoss, newLongOptimizer, numDays, fig, globalerror, modelerror, newerror, final, graphJSON
 
-    code=""
+   
     changeModel=False
     changelongPredMod=False
     longPredInput=False
@@ -193,7 +193,13 @@ def dashboard_page():
             return render_template('dashboard.html',  form0=form0, form1=form1,form1errors=form1errors, form2=form2,\
                                    form2errors=form2errors, form3 = form3, form4 = form4,\
                                      form4errors=form4errors, form5=form5, form6 = form6,  graphJSON=graphJSON, errorsDict = errorsDict, code=code)
-        except:
+        except Exception as e:
+            # Print detailed traceback
+            print("An exception occurred:")
+            traceback.print_exc()
+            # You can also log the error message or use it programmatically
+            error_message = traceback.format_exc()
+            print(f"Formatted traceback: {error_message}")
             flash(f'You have entered the wrong code! Please look at the meta data guide in the settings.', category='danger')
             return redirect(url_for('dashboard_page'))
         

@@ -148,7 +148,9 @@ def preloading(dataset,lookback = conf.lookback,code=conf.code, epochs=conf.epoc
     
     
 def init(code, prevCode):
-   
+    print("random check")
+    print(code)
+    print(prevCode)
     if (code==prevCode) == False:
         dataset =  dataFrame(code)
         

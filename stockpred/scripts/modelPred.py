@@ -198,6 +198,8 @@ def realTimePred(globalPred, globalReal, code, changeModel, longPredInput, chang
     else:
         
         preprocessor = preProcessing(dataset,lookback)
+        print("hello")
+        print(dataset)
         historyUpdate, historyDateUpdate = preprocessor.dataLoading(startDate=str(date.today()))
         historyDateUpdate=list(historyDateUpdate)
         historyUpdate = historyUpdate[:,0]

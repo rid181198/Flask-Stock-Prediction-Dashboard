@@ -29,7 +29,8 @@ class LSTMmodelPipe():
         self.model.add(LSTM(self.neurons, return_sequences=False))
         self.model.add(Dense(self.neurons/2))
         self.model.add(Dense(1))
-
-        self.model.compile(optimizer= self.optimizer, loss=self.loss)
         
+        self.model.compile(optimizer= self.optimizer, loss=self.loss)
+        print("wowww")
+        print(self.model)
         return self.model
